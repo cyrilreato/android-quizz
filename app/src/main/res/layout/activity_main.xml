@@ -1,0 +1,71 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="ch.ifage.quizz.MainActivity">
+
+    <TextView
+        android:id="@+id/labelQuestion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/question" />
+
+    <TextView
+        android:id="@+id/textQuestion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/labelQuestion"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/labelQuestion"
+        android:ems="10" />
+
+    <Button
+        android:id="@+id/buttonShow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textQuestion"
+        android:layout_below="@+id/textQuestion"
+        android:text="@string/show"
+        android:onClick="onClickShow" />
+
+    <TextView
+        android:id="@+id/labelAnswer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/buttonShow"
+        android:layout_below="@+id/buttonShow"
+        android:text="@string/answer" />
+
+    <TextView
+        android:id="@+id/textAnswer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/labelAnswer"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/labelAnswer"
+        android:ems="10" />
+
+    <Button
+        android:id="@+id/buttonWrong"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textAnswer"
+        android:layout_below="@+id/textAnswer"
+        android:text="@string/wrong"
+        android:onClick="onClickWrong" />
+
+    <Button
+        android:id="@+id/buttonRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/buttonWrong"
+        android:layout_alignBottom="@+id/buttonWrong"
+        android:layout_toRightOf="@+id/buttonWrong"
+        android:text="@string/right"
+        android:onClick="onClickRight" />
+
+</RelativeLayout>
