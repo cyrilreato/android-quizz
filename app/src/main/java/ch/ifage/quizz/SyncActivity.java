@@ -52,6 +52,7 @@ public class SyncActivity extends Activity {
     private void syncQuestions(String maxDate){
         maxDate = maxDate.replaceAll("[^0-9]","");
         NetworkHelper.doSync(this, maxDate);
+        //Test
     }
 
     public void OnLoadedQuestionsCount(String result) {
