@@ -11,6 +11,7 @@ import android.text.Html;
 import android.view.View;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import ch.ifage.quizz.model.Question;
 
@@ -68,6 +69,7 @@ public class SyncActivity extends Activity {
 
     public void onLoadedNewQuestions(String result){
 
+        // Deleted questions
         ArrayList<Integer> deleted_questions = NetworkHelper.parseDeletedQuestionsJson(result);
         if(deleted_questions != null) {
             for (Integer nb : deleted_questions) {
@@ -75,10 +77,20 @@ public class SyncActivity extends Activity {
             }
         }
 
+        // New/edit questions
         ArrayList<Question> new_questions = NetworkHelper.parseNewQuestionsJson(result);
         if(new_questions != null) {
+            List<Integer> nb_list = DBController.findAllQuestionsNb(this);
+            System.out.println(nb_list);
             for (Question q : new_questions) {
-                DBController.addQuestion(this, q);
+                if(nb_list != null && nb_list.contains(q.getNb())){
+                    System.out.println("Update question " + q.getNb());
+                    DBController.updateQuestionFromNb(this, q);
+                }else{
+                    System.out.println("Add question " + q.getNb());
+                    DBController.addQuestion(this, q);
+                }
+
             }
         }
 
@@ -94,7 +106,6 @@ public class SyncActivity extends Activity {
     }
 
     private String findLocalLastSyncDate(){
-        //String  maxDate = DBController.findQuestionMaxDate(getApplicationContext());
         String maxDate = DBController.findLastSyncDate(getApplicationContext());
         if(maxDate==null){
             maxDate = "";

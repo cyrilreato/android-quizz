@@ -28,7 +28,6 @@ public class MainActivity extends Activity {
 
         // Database init
         //resetTableWithDummyQuestions();
-        //DBController.deleteAllQuestions(this);
 
         // Get random question and set UI
         boolean success = loadRandomQuestion();
@@ -83,12 +82,12 @@ public class MainActivity extends Activity {
 
     private void resetTableWithDummyQuestions() {
         DBController.deleteAllQuestions(this);
-        DBController.addQuestion(this, new Question("Quelle est la capitale de la <b>France</b> ?", "Paris"));
-        DBController.addQuestion(this, new Question("Quelle est la capitale de la <b>Biélorussie</b> ?", "Minsk"));
-        DBController.addQuestion(this, new Question("Quelle est la capitale de la <b>Grèce</b> ?", "Athènes"));
-        DBController.addQuestion(this, new Question("Quelle est la capitale de la <b>Serbie</b> ?", "Belgrade"));
-        DBController.addQuestion(this, new Question("Quelle est la capitale de la <b>Suède</b> ?", "Stockholm"));
-        DBController.addQuestion(this, new Question("Quelle est la capitale de l'<b>Ukraine</b> ?", "Kiev"));
+        DBController.addQuestion(this, new Question(1, "Quelle est la capitale de la <b>France</b> ?", "Paris"));
+        DBController.addQuestion(this, new Question(2, "Quelle est la capitale de la <b>Biélorussie</b> ?", "Minsk"));
+        DBController.addQuestion(this, new Question(3, "Quelle est la capitale de la <b>Grèce</b> ?", "Athènes"));
+        DBController.addQuestion(this, new Question(4, "Quelle est la capitale de la <b>Serbie</b> ?", "Belgrade"));
+        DBController.addQuestion(this, new Question(5, "Quelle est la capitale de la <b>Suède</b> ?", "Stockholm"));
+        DBController.addQuestion(this, new Question(6, "Quelle est la capitale de l'<b>Ukraine</b> ?", "Kiev"));
     }
 
     private boolean loadRandomQuestion(){
@@ -97,7 +96,7 @@ public class MainActivity extends Activity {
             return false;
         }
         int rnd = (int) (Math.floor(Math.random() * (qCount)));
-        currentQuestion = DBController.getNthQuestion(this, rnd);
+        currentQuestion = DBController.findNthQuestion(this, rnd);
         return true;
     }
 
@@ -108,7 +107,7 @@ public class MainActivity extends Activity {
         }
         int rnd = (int) (Math.floor(Math.random() * (qCount-1)));
         int currentId = currentQuestion.getId();
-        currentQuestion = DBController.getNthQuestionDifferentFromId(this, rnd, currentId);
+        currentQuestion = DBController.findNthQuestionDifferentFromId(this, rnd, currentId);
         return true;
     }
 

@@ -18,8 +18,9 @@ public class Question {
 
     public Question(){}
 
-    public Question(String question, String answer){
+    public Question(int nb, String question, String answer){
         super();
+        this.nb = nb;
         this.question = question;
         this.answer = answer;
     }
