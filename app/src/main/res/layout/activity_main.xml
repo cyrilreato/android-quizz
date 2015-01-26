@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
@@ -12,6 +13,9 @@
         android:id="@+id/labelQuestion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:textAllCaps="true"
+        android:textStyle="bold"
         android:text="@string/question" />
 
     <TextView
@@ -21,12 +25,17 @@
         android:layout_alignLeft="@+id/labelQuestion"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/labelQuestion"
+        android:minLines="8"
+        android:singleLine="false"
+        android:background="@drawable/back"
         android:ems="10" />
 
     <Button
         android:id="@+id/buttonShow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:layout_alignLeft="@+id/textQuestion"
         android:layout_below="@+id/textQuestion"
         android:text="@string/show"
@@ -36,6 +45,9 @@
         android:id="@+id/labelAnswer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:textAllCaps="true"
+        android:textStyle="bold"
         android:layout_alignLeft="@+id/buttonShow"
         android:layout_below="@+id/buttonShow"
         android:text="@string/answer" />
@@ -47,6 +59,9 @@
         android:layout_alignLeft="@+id/labelAnswer"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/labelAnswer"
+        android:minLines="8"
+        android:singleLine="false"
+        android:background="@drawable/back"
         android:ems="10" />
 
     <Button
