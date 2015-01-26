@@ -5,6 +5,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.content.Context;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,7 +26,6 @@ public class DBController {
             cursor.moveToFirst();
         }
         maxDate = cursor.getString(0);
-        System.out.println(maxDate);
         cursor.close();
         return maxDate;
     }
@@ -42,7 +44,22 @@ public class DBController {
         return questionsCount;
     }
 
-
+    public static String findLastSyncDate(Context context){
+        String lastSync;
+        String query = "SELECT last_sync FROM quizz_config";
+        SQLiteDatabase db = SQLiteHelper.getInstance(context).getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor!=null){
+            cursor.moveToFirst();
+        }
+        if(cursor.getCount()==0){
+            lastSync = null;
+        }else {
+            lastSync = cursor.getString(0);
+        }
+        cursor.close();
+        return lastSync;
+    }
 
     public static Question getQuestion(Context context, int id){
         SQLiteDatabase db = SQLiteHelper.getInstance(context).getReadableDatabase();
@@ -118,7 +135,6 @@ public class DBController {
 
 
     public static void addQuestion(Context context, Question question){
-        System.out.println("Adding question : " + question.toString());
         SQLiteDatabase db = SQLiteHelper.getInstance(context).getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("nb", question.getNb());
@@ -154,10 +170,45 @@ public class DBController {
         db.close();
     }
 
+    public static void deleteQuestionFromNb(Context context, Integer nb){
+        SQLiteDatabase db = SQLiteHelper.getInstance(context).getWritableDatabase();
+        db.delete("question",
+                "nb=?",
+                new String[]{ String.valueOf(nb)} );
+        db.close();
+    }
+
 
     public static void deleteAllQuestions(Context context){
         SQLiteDatabase db = SQLiteHelper.getInstance(context).getWritableDatabase();
         db.delete("question", null,  null);
+        db.close();
+    }
+
+    public static void updateLastSyncDate(Context context){
+        Calendar cal = Calendar.getInstance();
+        Date now = cal.getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        String nowString = sdf.format(now);
+        ContentValues values = new ContentValues();
+        values.put("last_sync", nowString);
+
+        SQLiteDatabase db = SQLiteHelper.getInstance(context).getWritableDatabase();
+        db.update("quizz_config",
+                values,
+                null,
+                null);
+        db.close();
+    }
+
+    public static void resetLastSyncDate(Context context){
+        SQLiteDatabase db = SQLiteHelper.getInstance(context).getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("last_sync", "");
+        db.update("quizz_config",
+                values,
+                null,
+                null);
         db.close();
     }
 

@@ -78,6 +78,5 @@ public class Question {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        System.out.println(datemod + " " + this.datemod.toString());
     }
 }

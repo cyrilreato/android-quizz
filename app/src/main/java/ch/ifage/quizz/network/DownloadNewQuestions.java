@@ -5,12 +5,15 @@ import ch.ifage.quizz.SyncActivity;
 
 public class DownloadNewQuestions extends ADownloadWebpageTask implements IDownloadWebpage {
 
-    String URL = "http://www.reato.ch/quizz/quizz.php";
+    String URL = "http://www.reato.ch/quizz/questions.php";
 
     public DownloadNewQuestions(Activity activity, String maxDate){
         super(activity);
         loadedBehavior = this;
-        urlToLoad = URL + "?since=" + maxDate;
+        urlToLoad = URL;
+        if(maxDate!=null && !maxDate.equals("")){
+            urlToLoad = urlToLoad + "?since=" + maxDate;
+        }
     }
 
     public void perform(String result) {

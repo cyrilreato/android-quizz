@@ -30,7 +30,7 @@ public class SyncActivity extends Activity {
 
         showSpinner();
         disableSyncButton();
-        String maxDate = findLocalQuestionMaxDate();
+        String maxDate = findLocalLastSyncDate();
 
         syncQuestionsCount(maxDate);
 
@@ -40,7 +40,7 @@ public class SyncActivity extends Activity {
     public void onClickSynchronize(View view) {
         showSpinner();
         disableSyncButton();
-        String maxDate = findLocalQuestionMaxDate();
+        String maxDate = findLocalLastSyncDate();
         syncQuestions(maxDate);
     }
 
@@ -52,7 +52,6 @@ public class SyncActivity extends Activity {
     private void syncQuestions(String maxDate){
         maxDate = maxDate.replaceAll("[^0-9]","");
         NetworkHelper.doSync(this, maxDate);
-        //Test
     }
 
     public void OnLoadedQuestionsCount(String result) {
@@ -62,16 +61,28 @@ public class SyncActivity extends Activity {
         htmlTextView.setText(Html.fromHtml("Questions à synchroniser: " + questions_counts.get("questions_count") + "<br>" + "Questions à effacer: " + questions_counts.get("deleted_count")));
 
         hideSpinner();
-        if(questions_counts.get("questions_count") > 0) {
+        if(questions_counts.get("questions_count") > 0 || questions_counts.get("deleted_count") > 0) {
             enableSyncButton();
         }
     }
 
     public void onLoadedNewQuestions(String result){
-        ArrayList<Question> questions = NetworkHelper.parseQuestionsJson(result);
-        for(Question q : questions){
-            DBController.addQuestion(this, q);
+
+        ArrayList<Integer> deleted_questions = NetworkHelper.parseDeletedQuestionsJson(result);
+        if(deleted_questions != null) {
+            for (Integer nb : deleted_questions) {
+                DBController.deleteQuestionFromNb(this, nb);
+            }
         }
+
+        ArrayList<Question> new_questions = NetworkHelper.parseNewQuestionsJson(result);
+        if(new_questions != null) {
+            for (Question q : new_questions) {
+                DBController.addQuestion(this, q);
+            }
+        }
+
+        DBController.updateLastSyncDate(this);
 
         TextView htmlTextView = (TextView)findViewById(R.id.labelSyncStatus);
         htmlTextView.setText(Html.fromHtml("<b>Synchronization réussie !</b>"));
@@ -82,34 +93,18 @@ public class SyncActivity extends Activity {
 
     }
 
-    public void onLoadedDeletedQuestions(String result){
-        ArrayList<Question> questions = NetworkHelper.parseQuestionsJson(result);
-        for(Question q : questions){
-            DBController.addQuestion(this, q);
-        }
-
-        TextView htmlTextView = (TextView)findViewById(R.id.labelSyncStatus);
-        htmlTextView.setText(Html.fromHtml("<b>Synchronization réussie !</b>"));
-
-        hideSpinner();
-
-        MainActivity.newQuestionOnBack = true;
-
-    }
-
-    private void enableSyncButton(){
-        syncButton = (Button)findViewById(R.id.buttonSync);
-        syncButton.setEnabled(true);
-    }
-
-    private String findLocalQuestionMaxDate(){
-        String  maxDate = DBController.findQuestionMaxDate(getApplicationContext());
+    private String findLocalLastSyncDate(){
+        //String  maxDate = DBController.findQuestionMaxDate(getApplicationContext());
+        String maxDate = DBController.findLastSyncDate(getApplicationContext());
         if(maxDate==null){
             maxDate = "";
         }
         return maxDate;
     }
 
+    private void enableSyncButton(){
+        syncButton.setEnabled(true);
+    }
     private void disableSyncButton(){
         syncButton.setEnabled(false);
     }

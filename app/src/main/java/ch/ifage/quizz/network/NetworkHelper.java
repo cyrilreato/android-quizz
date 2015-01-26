@@ -42,18 +42,14 @@ public class NetworkHelper {
         }
     }
 
-    public static ArrayList<Question> parseQuestionsJson(String downloadedString){
-
-        System.out.println("JSON parsing");
-
-        ArrayList<Question> questions = null;
+    public static ArrayList<Question> parseNewQuestionsJson(String downloadedString){
+        ArrayList<Question> new_questions = null;
 
         try {
             JSONObject json = new JSONObject(downloadedString);
-
-            JSONArray jquestions = (JSONArray) json.get("questions");
+            JSONArray jquestions = (JSONArray) json.get("questions_new");
             if(jquestions.length()>0){
-                questions = new ArrayList<Question>();
+                new_questions = new ArrayList<Question>();
             }
             for(int i=0;i<jquestions.length();i++){
                 Question question = new Question();
@@ -63,7 +59,7 @@ public class NetworkHelper {
                 question.setQuestion(q.getString("question").toString());
                 question.setAnswer(q.getString("answer").toString());
                 question.setStringDatemod(q.getString("datemod").toString());
-                questions.add(question);
+                new_questions.add(question);
 
             }
         } catch (Exception e) {
@@ -71,31 +67,31 @@ public class NetworkHelper {
             System.out.println(e.getMessage());
         }
 
-        return questions;
+        return new_questions;
     }
 
     public static ArrayList<Integer> parseDeletedQuestionsJson(String downloadedString){
-
-        System.out.println("JSON parsing");
-
-        ArrayList<Integer> deleted_nb = null;
+        ArrayList<Integer> deleted_questions = null;
 
         try {
-            JSONArray json = new JSONArray(downloadedString);
-
-            if(json.length()>0){
-                deleted_nb = new ArrayList<Integer>();
+            JSONObject json = new JSONObject(downloadedString);
+            if(json.isNull("questions_deleted")){
+                return deleted_questions;
             }
-            for(int i=0;i<json.length();i++){
-                System.out.println(json.get(i));
-                //deleted_nb.add(Integer.parseInt(q.get("nb").toString()));
+            JSONArray jquestions = (JSONArray) json.get("questions_deleted");
+            if(jquestions.length()>0){
+                deleted_questions = new ArrayList<Integer>();
+            }
+            for(int i=0;i<jquestions.length();i++){
+                JSONObject q = (JSONObject) jquestions.get(i);
+                deleted_questions.add(Integer.parseInt(q.get("nb").toString()));
             }
         } catch (Exception e) {
             System.out.println("JSON parsing crashed");
             System.out.println(e.getMessage());
         }
 
-        return deleted_nb;
+        return deleted_questions;
     }
 
 

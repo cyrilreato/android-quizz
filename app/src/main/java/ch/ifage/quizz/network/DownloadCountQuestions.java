@@ -11,8 +11,10 @@ public class DownloadCountQuestions extends ADownloadWebpageTask implements IDow
     public DownloadCountQuestions(Activity activity, String maxDate){
         super(activity);
         loadedBehavior = this;
-        System.out.println(URL + "?since=" + maxDate);
-        urlToLoad = URL + "?since=" + maxDate;
+        urlToLoad = URL;
+        if(maxDate!=null && !maxDate.equals("")){
+            urlToLoad = urlToLoad + "?since=" + maxDate;
+        }
     }
 
     public void perform(String result) {

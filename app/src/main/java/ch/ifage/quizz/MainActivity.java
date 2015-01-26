@@ -54,6 +54,7 @@ public class MainActivity extends Activity {
         }
         if(id == R.id.deleteall_settings){
             DBController.deleteAllQuestions(this);
+            DBController.resetLastSyncDate(this);
             populateUiWithNoQuestion();
         }
         return super.onOptionsItemSelected(item);
@@ -156,7 +157,7 @@ public class MainActivity extends Activity {
 
     @Override
     public void onRestart(){
-        System.out.println("Main activity restart");
+        //System.out.println("Main activity restart");
         if(newQuestionOnBack) {
             // Get random question and set UI
             boolean success = loadRandomQuestion();
