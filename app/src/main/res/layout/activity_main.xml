@@ -28,7 +28,8 @@
         android:minLines="8"
         android:singleLine="false"
         android:background="@drawable/back"
-        android:ems="10" />
+        android:ems="10"
+        android:padding="5dp" />
 
     <Button
         android:id="@+id/buttonShow"
@@ -36,10 +37,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:layout_alignLeft="@+id/textQuestion"
-        android:layout_below="@+id/textQuestion"
         android:text="@string/show"
-        android:onClick="onClickShow" />
+        android:onClick="onClickShow"
+        android:layout_below="@+id/textQuestion"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp" />
 
     <TextView
         android:id="@+id/labelAnswer"
@@ -48,9 +50,9 @@
         android:textSize="20dp"
         android:textAllCaps="true"
         android:textStyle="bold"
-        android:layout_alignLeft="@+id/buttonShow"
+        android:text="@string/answer"
         android:layout_below="@+id/buttonShow"
-        android:text="@string/answer" />
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:id="@+id/textAnswer"
@@ -62,25 +64,29 @@
         android:minLines="8"
         android:singleLine="false"
         android:background="@drawable/back"
-        android:ems="10" />
+        android:ems="10"
+        android:padding="5dp" />
 
-    <Button
-        android:id="@+id/buttonWrong"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textAnswer"
-        android:layout_below="@+id/textAnswer"
-        android:text="@string/wrong"
-        android:onClick="onClickWrong" />
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/textAnswer"
+        android:layout_marginTop="10dp">
+        <Button
+            android:id="@+id/buttonWrong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/wrong"
+            android:onClick="onClickWrong" />
 
-    <Button
-        android:id="@+id/buttonRight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/buttonWrong"
-        android:layout_alignBottom="@+id/buttonWrong"
-        android:layout_toRightOf="@+id/buttonWrong"
-        android:text="@string/right"
-        android:onClick="onClickRight" />
+        <Button
+            android:id="@+id/buttonRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/right"
+            android:onClick="onClickRight" />
+
+    </LinearLayout>
 
 </RelativeLayout>
