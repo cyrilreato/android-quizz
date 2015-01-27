@@ -14,6 +14,7 @@ public class DownloadNewQuestions extends ADownloadWebpageTask implements IDownl
         if(maxDate!=null && !maxDate.equals("")){
             urlToLoad = urlToLoad + "?since=" + maxDate;
         }
+        System.out.println(urlToLoad);
     }
 
     public void perform(String result) {

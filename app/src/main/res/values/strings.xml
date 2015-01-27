@@ -10,9 +10,10 @@
     <string name="show">Montrer</string>
     <string name="wrong">Faux</string>
     <string name="right">Juste</string>
-    <string name="title_activity_sync">SyncActivity</string>
+    <string name="title_activity_sync">Synchronization</string>
     <string name="synchronize">Synchronize</string>
     <string name="deleteall_settings">Delete all questions</string>
+    <string name="quizz_settings">Choose Quizz</string>
     <string name="initial_stats">0/0</string>
-
+    <string name="title_activity_quizz">Quizz</string>
 </resources>

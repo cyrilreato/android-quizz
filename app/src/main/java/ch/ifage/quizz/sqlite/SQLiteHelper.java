@@ -7,7 +7,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     private static SQLiteHelper sInstance;
     private final Context myContext;
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 13;
     private static final String DATABASE_NAME = "QuizzDB";
 
 
@@ -27,8 +27,16 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         //System.out.println("onCreate database");
+        String CREATE_QUIZZ_TABLE = "CREATE TABLE quizz (" +
+                "id INTEGER PRIMARY KEY, " +
+                "name TEXT, " +
+                "description TEXT, " +
+                "datemod TEXT " +
+                ")";
+
         String CREATE_QUESTION_TABLE = "CREATE TABLE question (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "quizz_id INTEGER, " +
                 "nb INTEGER, " +
                 "question TEXT, " +
                 "answer TEXT, " +
@@ -42,6 +50,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
         String INSERT_CONFIG_TABLE = "INSERT INTO quizz_config VALUES (null)";
 
+        db.execSQL(CREATE_QUIZZ_TABLE);
         db.execSQL(CREATE_QUESTION_TABLE);
         db.execSQL(CREATE_CONFIG_TABLE);
         db.execSQL(INSERT_CONFIG_TABLE);
@@ -50,6 +59,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         //System.out.println("onUpgrade database");
+        db.execSQL("DROP TABLE IF EXISTS quizz");
         db.execSQL("DROP TABLE IF EXISTS question");
         db.execSQL("DROP TABLE IF EXISTS quizz_config");
         this.onCreate(db);

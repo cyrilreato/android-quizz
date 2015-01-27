@@ -21,10 +21,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".SyncActivity"
             android:label="@string/title_activity_sync" >
+        </activity>
+        <activity
+            android:name=".QuizzActivity"
+            android:label="@string/title_activity_quizz" >
         </activity>
     </application>
 

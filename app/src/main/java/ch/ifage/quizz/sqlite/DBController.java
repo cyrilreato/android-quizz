@@ -13,6 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ch.ifage.quizz.model.Question;
+import ch.ifage.quizz.model.Quizz;
 
 public class DBController {
 
@@ -50,7 +51,7 @@ public class DBController {
     public static Question findQuestion(Context context, int id){
         SQLiteDatabase db = SQLiteHelper.getInstance(context).getReadableDatabase();
         Cursor cursor = db.query("question",
-                new String[]{"id", "nb", "question","answer", "count_right", "count_wrong", "datemod"},
+                new String[]{"id", "nb", "question","answer", "count_right", "count_wrong", "datemod", "quizz_id"},
                 "id = ?",
                 new String[]{String.valueOf(id)},
                 null,
@@ -68,6 +69,7 @@ public class DBController {
         question.setCountRight(cursor.getInt(4));
         question.setCountWrong(cursor.getInt(5));
         question.setStringDatemod(cursor.getString(6));
+        question.setQuizzId(cursor.getInt(7));
         cursor.close();
         return question;
     }
@@ -80,9 +82,9 @@ public class DBController {
         SQLiteDatabase db = SQLiteHelper.getInstance(context).getReadableDatabase();
         String query;
         if(currentId==0){
-            query = "SELECT id, nb, question, answer, count_right, count_wrong, datemod FROM question ORDER BY id LIMIT 1 OFFSET " + n;
+            query = "SELECT id, nb, question, answer, count_right, count_wrong, datemod, quizz_id FROM question ORDER BY id LIMIT 1 OFFSET " + n;
         }else{
-            query = "SELECT id, nb, question, answer, count_right, count_wrong, datemod FROM question WHERE id != " + currentId + " ORDER BY id LIMIT 1 OFFSET " + n;
+            query = "SELECT id, nb, question, answer, count_right, count_wrong, datemod, quizz_id FROM question WHERE id != " + currentId + " ORDER BY id LIMIT 1 OFFSET " + n;
         }
         Cursor cursor = db.rawQuery(query, null);
         if(cursor!=null){
@@ -96,6 +98,7 @@ public class DBController {
         question.setCountRight(cursor.getInt(4));
         question.setCountWrong(cursor.getInt(5));
         question.setStringDatemod(cursor.getString(6));
+        question.setQuizzId(cursor.getInt(7));
 
         cursor.close();
         return question;
@@ -103,7 +106,7 @@ public class DBController {
 
     public static List<Question> findAllQuestions(Context context){
         List<Question> questions = new LinkedList<Question>();
-        String query = "SELECT id, nb, question, answer, count_right, count_wrong, datemod FROM question";
+        String query = "SELECT id, nb, question, answer, count_right, count_wrong, datemod, quizz_id FROM question";
 
         SQLiteDatabase db = SQLiteHelper.getInstance(context).getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -118,6 +121,7 @@ public class DBController {
                 question.setCountRight(cursor.getInt(4));
                 question.setCountWrong(cursor.getInt(5));
                 question.setStringDatemod(cursor.getString(6));
+                question.setQuizzId(cursor.getInt(7));
                 questions.add(question);
             }while(cursor.moveToNext());
         }
@@ -142,12 +146,43 @@ public class DBController {
         return questions_nb;
     }
 
+    public static List<Integer> findAllQuizzId(Context context){
+        List<Integer> quizz_id = null;
+        String query = "SELECT id FROM quizz";
+
+        SQLiteDatabase db = SQLiteHelper.getInstance(context).getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if(cursor.moveToFirst()){
+            quizz_id = new ArrayList<Integer>();
+            do{
+                quizz_id.add(cursor.getInt(0));
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+        return quizz_id;
+    }
+
+    public static void addQuizz(Context context, Quizz quizz){
+        SQLiteDatabase db = SQLiteHelper.getInstance(context).getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("id", quizz.getId());
+        values.put("name", quizz.getName());
+        values.put("description", quizz.getDescription());
+        if(quizz.getDatemod()!=null) {
+            values.put("datemod", quizz.getStringDatemod());
+        }
+        db.insert("quizz", null, values);
+        db.close();
+    }
+
     public static void addQuestion(Context context, Question question){
         SQLiteDatabase db = SQLiteHelper.getInstance(context).getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("nb", question.getNb());
         values.put("question", question.getQuestion());
         values.put("answer", question.getAnswer());
+        values.put("quizz_id", question.getQuizzId());
         if(question.getDatemod()!=null) {
             values.put("datemod", question.getStringDatemod());
         }
@@ -164,11 +199,28 @@ public class DBController {
         values.put("count_right", question.getCountRight());
         values.put("count_wrong", question.getCountWrong());
         values.put("datemod", question.getStringDatemod());
+        values.put("quizz_id", question.getQuizzId());
 
         int i = db.update("question",
                 values,
                 "id = ?",
                 new String[]{String.valueOf(question.getId())});
+        db.close();
+        return i;
+    }
+
+    public static int updateQuizzFromId(Context context, Quizz quizz){
+        SQLiteDatabase db = SQLiteHelper.getInstance(context).getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("id", quizz.getId());
+        values.put("name", quizz.getName());
+        values.put("description", quizz.getDescription());
+        values.put("datemod", quizz.getStringDatemod());
+
+        int i = db.update("quizz",
+                values,
+                "id = ?",
+                new String[]{String.valueOf(quizz.getId())});
         db.close();
         return i;
     }
@@ -182,6 +234,7 @@ public class DBController {
         values.put("count_right", question.getCountRight());
         values.put("count_wrong", question.getCountWrong());
         values.put("datemod", question.getStringDatemod());
+        values.put("quizz_id", question.getQuizzId());
 
         int i = db.update("question",
                 values,
@@ -196,6 +249,14 @@ public class DBController {
         db.delete("question",
                 "id=?",
                 new String[]{ String.valueOf(question.getId())} );
+        db.close();
+    }
+
+    public static void deleteQuizzFromId(Context context, Integer id){
+        SQLiteDatabase db = SQLiteHelper.getInstance(context).getWritableDatabase();
+        db.delete("quizz",
+                "id=?",
+                new String[]{ String.valueOf(id)} );
         db.close();
     }
 

@@ -1,5 +1,6 @@
 package ch.ifage.quizz;
 
+import ch.ifage.quizz.model.Quizz;
 import ch.ifage.quizz.sqlite.DBController;
 import ch.ifage.quizz.network.NetworkHelper;
 import android.app.Activity;
@@ -37,7 +38,6 @@ public class SyncActivity extends Activity {
 
     }
 
-
     public void onClickSynchronize(View view) {
         showSpinner();
         disableSyncButton();
@@ -55,14 +55,16 @@ public class SyncActivity extends Activity {
         NetworkHelper.doSync(this, maxDate);
     }
 
-    public void OnLoadedQuestionsCount(String result) {
+    public void onLoadedQuestionsCount(String result) {
         HashMap<String, Integer> questions_counts = NetworkHelper.parseQuestionsCountJson(result);
 
         TextView htmlTextView = (TextView)findViewById(R.id.labelSyncStatus);
-        htmlTextView.setText(Html.fromHtml("Questions à synchroniser: " + questions_counts.get("questions_count") + "<br>" + "Questions à effacer: " + questions_counts.get("deleted_count")));
+        String text = "Quizz à synchroniser: " + questions_counts.get("quizz_new_count") + "<br>" + "Quizz à effacer: " + questions_counts.get("quizz_deleted_count") + "<br>";
+        text = text + "Questions à synchroniser: " + questions_counts.get("questions_new_count") + "<br>" + "Questions à effacer: " + questions_counts.get("questions_deleted_count") + "<br>";
+        htmlTextView.setText(Html.fromHtml(text));
 
         hideSpinner();
-        if(questions_counts.get("questions_count") > 0 || questions_counts.get("deleted_count") > 0) {
+        if(questions_counts.get("quizz_new_count") > 0 || questions_counts.get("quizz_deleted_count") > 0 || questions_counts.get("questions_new_count") > 0 || questions_counts.get("questions_deleted_count") > 0) {
             enableSyncButton();
         }
     }
@@ -73,7 +75,33 @@ public class SyncActivity extends Activity {
         ArrayList<Integer> deleted_questions = NetworkHelper.parseDeletedQuestionsJson(result);
         if(deleted_questions != null) {
             for (Integer nb : deleted_questions) {
+                //System.out.println("Delete question " + nb);
                 DBController.deleteQuestionFromNb(this, nb);
+            }
+        }
+
+        // Deleted quizz
+        ArrayList<Integer> deleted_quizz = NetworkHelper.parseDeletedQuizzJson(result);
+        if(deleted_quizz != null) {
+            for (Integer id : deleted_quizz) {
+                //System.out.println("Delete quizz " + id);
+                DBController.deleteQuizzFromId(this, id);
+            }
+        }
+
+        // New quizz
+        ArrayList<Quizz> new_quizz = NetworkHelper.parseNewQuizzJson(result);
+        if(new_quizz != null){
+            List<Integer> id_list = DBController.findAllQuizzId(this);
+            for(Quizz q : new_quizz){
+                if(id_list != null && id_list.contains(q.getId())){
+                    //System.out.println("Update quizz " + q.getId());
+                    DBController.updateQuizzFromId(this, q);
+                }else{
+                    //System.out.println("Add quizz " + q.getId());
+                    DBController.addQuizz(this, q);
+                }
+                System.out.println(q);
             }
         }
 
@@ -115,6 +143,7 @@ public class SyncActivity extends Activity {
     private void enableSyncButton(){
         syncButton.setEnabled(true);
     }
+
     private void disableSyncButton(){
         syncButton.setEnabled(false);
     }

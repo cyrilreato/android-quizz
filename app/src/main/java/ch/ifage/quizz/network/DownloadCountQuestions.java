@@ -18,7 +18,7 @@ public class DownloadCountQuestions extends ADownloadWebpageTask implements IDow
     }
 
     public void perform(String result) {
-        ((SyncActivity)activity).OnLoadedQuestionsCount(result);
+        ((SyncActivity)activity).onLoadedQuestionsCount(result);
     }
 
 }

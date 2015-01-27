@@ -9,6 +9,7 @@ import java.util.Locale;
 public class Question {
 
     private int id;
+    private int quizzId;
     private int nb;
     private String question;
     private String answer;
@@ -28,7 +29,7 @@ public class Question {
     }
 
     public String toString(){
-        return "Question [id=" + id + ", nb=" + nb + ", datemod=" + getStringDatemod() + ", question=" + question + ", answer=" + answer + ", right/wrong" + countRight + "/" + countWrong + "]";
+        return "Question [id=" + id + ", quizz_id=" + quizzId + ", nb=" + nb + ", datemod=" + getStringDatemod() + ", question=" + question + ", answer=" + answer + ", right/wrong" + countRight + "/" + countWrong + "]";
     }
 
     public void incrementCountRight(){
@@ -45,6 +46,14 @@ public class Question {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getQuizzId(){
+        return this.quizzId;
+    }
+
+    public void setQuizzId(int quizzId){
+        this.quizzId = quizzId;
     }
 
     public int getNb() {

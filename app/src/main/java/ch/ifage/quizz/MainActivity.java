@@ -47,6 +47,10 @@ public class MainActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        if(id == R.id.quizz_settings){
+            Intent i = new Intent(this, QuizzActivity.class);
+            startActivity(i);
+        }
         if(id == R.id.sync_settings){
             Intent i = new Intent(this, SyncActivity.class);
             //i.putExtra("originator", this.getClass().getName());
