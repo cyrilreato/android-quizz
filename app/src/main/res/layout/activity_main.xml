@@ -19,6 +19,14 @@
         android:text="@string/question" />
 
     <TextView
+        android:id="@+id/labelStats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignBottom="@id/labelQuestion" />
+
+    <TextView
         android:id="@+id/textQuestion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

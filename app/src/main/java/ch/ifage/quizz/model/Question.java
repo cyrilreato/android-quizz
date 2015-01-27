@@ -12,6 +12,8 @@ public class Question {
     private int nb;
     private String question;
     private String answer;
+    private int countRight;
+    private int countWrong;
     private Date datemod;
 
     private static DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
@@ -26,7 +28,15 @@ public class Question {
     }
 
     public String toString(){
-        return "Question [id=" + id + ", nb=" + nb + ", datemod=" + getStringDatemod() + ", question=" + question + ", answer=" + answer + "]";
+        return "Question [id=" + id + ", nb=" + nb + ", datemod=" + getStringDatemod() + ", question=" + question + ", answer=" + answer + ", right/wrong" + countRight + "/" + countWrong + "]";
+    }
+
+    public void incrementCountRight(){
+        countRight++;
+
+    }
+    public void incrementCountWrong(){
+        countWrong++;
     }
 
     public int getId() {
@@ -63,6 +73,22 @@ public class Question {
 
     public Date getDatemod(){
         return datemod;
+    }
+
+    public int getCountRight(){
+        return countRight;
+    }
+
+    public void setCountRight(int countRight){
+        this.countRight = countRight;
+    }
+
+    public int getCountWrong(){
+        return countWrong;
+    }
+
+    public void setCountWrong(int countWrong){
+        this.countWrong = countWrong;
     }
 
     public String getStringDatemod(){

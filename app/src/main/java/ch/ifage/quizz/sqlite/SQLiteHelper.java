@@ -7,7 +7,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     private static SQLiteHelper sInstance;
     private final Context myContext;
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 10;
     private static final String DATABASE_NAME = "QuizzDB";
 
 
@@ -32,6 +32,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                 "nb INTEGER, " +
                 "question TEXT, " +
                 "answer TEXT, " +
+                "count_right INTEGER DEFAULT 0, " +
+                "count_wrong INTEGER DEFAULT 0, " +
                 "datemod TEXT " +
                 ")";
         String CREATE_CONFIG_TABLE = "CREATE TABLE quizz_config (" +

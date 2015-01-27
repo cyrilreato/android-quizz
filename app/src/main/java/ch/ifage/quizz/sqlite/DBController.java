@@ -50,7 +50,7 @@ public class DBController {
     public static Question findQuestion(Context context, int id){
         SQLiteDatabase db = SQLiteHelper.getInstance(context).getReadableDatabase();
         Cursor cursor = db.query("question",
-                new String[]{"id", "nb", "question","answer", "datemod"},
+                new String[]{"id", "nb", "question","answer", "count_right", "count_wrong", "datemod"},
                 "id = ?",
                 new String[]{String.valueOf(id)},
                 null,
@@ -65,7 +65,9 @@ public class DBController {
         question.setNb(cursor.getInt(1));
         question.setQuestion(cursor.getString(2));
         question.setAnswer(cursor.getString(3));
-        question.setStringDatemod(cursor.getString(4));
+        question.setCountRight(cursor.getInt(4));
+        question.setCountWrong(cursor.getInt(5));
+        question.setStringDatemod(cursor.getString(6));
         cursor.close();
         return question;
     }
@@ -78,9 +80,9 @@ public class DBController {
         SQLiteDatabase db = SQLiteHelper.getInstance(context).getReadableDatabase();
         String query;
         if(currentId==0){
-            query = "SELECT id, nb, question, answer FROM question ORDER BY id LIMIT 1 OFFSET " + n;
+            query = "SELECT id, nb, question, answer, count_right, count_wrong, datemod FROM question ORDER BY id LIMIT 1 OFFSET " + n;
         }else{
-            query = "SELECT id, nb, question, answer FROM question WHERE id != " + currentId + " ORDER BY id LIMIT 1 OFFSET " + n;
+            query = "SELECT id, nb, question, answer, count_right, count_wrong, datemod FROM question WHERE id != " + currentId + " ORDER BY id LIMIT 1 OFFSET " + n;
         }
         Cursor cursor = db.rawQuery(query, null);
         if(cursor!=null){
@@ -91,14 +93,17 @@ public class DBController {
         question.setNb(cursor.getInt(1));
         question.setQuestion(cursor.getString(2));
         question.setAnswer(cursor.getString(3));
+        question.setCountRight(cursor.getInt(4));
+        question.setCountWrong(cursor.getInt(5));
+        question.setStringDatemod(cursor.getString(6));
+
         cursor.close();
         return question;
     }
 
-
     public static List<Question> findAllQuestions(Context context){
         List<Question> questions = new LinkedList<Question>();
-        String query = "SELECT id, nb, question, answer, datemod FROM question";
+        String query = "SELECT id, nb, question, answer, count_right, count_wrong, datemod FROM question";
 
         SQLiteDatabase db = SQLiteHelper.getInstance(context).getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -110,7 +115,9 @@ public class DBController {
                 question.setNb(cursor.getInt(1));
                 question.setQuestion(cursor.getString(2));
                 question.setAnswer(cursor.getString(3));
-                question.setStringDatemod(cursor.getString(4));
+                question.setCountRight(cursor.getInt(4));
+                question.setCountWrong(cursor.getInt(5));
+                question.setStringDatemod(cursor.getString(6));
                 questions.add(question);
             }while(cursor.moveToNext());
         }
@@ -148,13 +155,14 @@ public class DBController {
         db.close();
     }
 
-
-    public static int updateQuestion(Context context, Question question){
+    public static int updateQuestionFromId(Context context, Question question){
         SQLiteDatabase db = SQLiteHelper.getInstance(context).getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("nb", question.getNb());
         values.put("question", question.getQuestion());
         values.put("answer", question.getAnswer());
+        values.put("count_right", question.getCountRight());
+        values.put("count_wrong", question.getCountWrong());
         values.put("datemod", question.getStringDatemod());
 
         int i = db.update("question",
@@ -171,6 +179,8 @@ public class DBController {
         values.put("nb", question.getNb());
         values.put("question", question.getQuestion());
         values.put("answer", question.getAnswer());
+        values.put("count_right", question.getCountRight());
+        values.put("count_wrong", question.getCountWrong());
         values.put("datemod", question.getStringDatemod());
 
         int i = db.update("question",
@@ -181,7 +191,7 @@ public class DBController {
         return i;
     }
 
-    public static void deleteQuestion(Context context, Question question){
+    public static void deleteQuestionFromId(Context context, Question question){
         SQLiteDatabase db = SQLiteHelper.getInstance(context).getWritableDatabase();
         db.delete("question",
                 "id=?",
@@ -196,7 +206,6 @@ public class DBController {
                 new String[]{ String.valueOf(nb)} );
         db.close();
     }
-
 
     public static void deleteAllQuestions(Context context){
         SQLiteDatabase db = SQLiteHelper.getInstance(context).getWritableDatabase();
@@ -231,4 +240,15 @@ public class DBController {
         db.close();
     }
 
+    public static void resetAllCounters(Context context){
+        SQLiteDatabase db = SQLiteHelper.getInstance(context).getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("count_wrong", 0);
+        values.put("count_right", 0);
+        db.update("question",
+                values,
+                null,
+                null);
+        db.close();
+    }
 }

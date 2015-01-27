@@ -34,6 +34,7 @@ public class MainActivity extends Activity {
         if(success){
             populateUiWithCurrentQuestion();
         }
+
     }
 
 
@@ -56,6 +57,13 @@ public class MainActivity extends Activity {
             DBController.resetLastSyncDate(this);
             populateUiWithNoQuestion();
         }
+        if(id == R.id.resetcounters_settings){
+            DBController.resetAllCounters(this);
+            currentQuestion.setCountRight(0);
+            currentQuestion.setCountWrong(0);
+            populateUiWithCurrentCounters();
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -65,14 +73,26 @@ public class MainActivity extends Activity {
     }
 
     public void onClickRight(View view) {
-        boolean success = loadRandomQuestionDifferentFromCurrent();
-        if(success){
-            toggleAnswerVisibility();
-            populateUiWithCurrentQuestion();
-        }
+
+        // Handle current question
+        currentQuestion.incrementCountRight();
+        DBController.updateQuestionFromId(this, currentQuestion);
+
+        // Load new question
+        loadAndDisplayNewQuestion();
     }
 
     public void onClickWrong(View view) {
+
+        // Handle current question
+        currentQuestion.incrementCountWrong();
+        DBController.updateQuestionFromId(this, currentQuestion);
+
+        // Load new question
+        loadAndDisplayNewQuestion();
+    }
+
+    private void loadAndDisplayNewQuestion(){
         boolean success = loadRandomQuestionDifferentFromCurrent();
         if(success){
             toggleAnswerVisibility();
@@ -118,6 +138,8 @@ public class MainActivity extends Activity {
         TextView htmlAnswer = (TextView)findViewById(R.id.textAnswer);
         htmlAnswer.setText(Html.fromHtml(currentQuestion.getAnswer()));
 
+        populateUiWithCurrentCounters();
+
         Button buttonShow = (Button)findViewById(R.id.buttonShow);
         buttonShow.setEnabled(true);
 
@@ -130,8 +152,17 @@ public class MainActivity extends Activity {
         TextView htmlAnswer = (TextView)findViewById(R.id.textAnswer);
         htmlAnswer.setText("");
 
+        TextView htmlStatsTextView = (TextView)findViewById(R.id.labelStats);
+        htmlStatsTextView.setText("");
+
         Button buttonShow = (Button)findViewById(R.id.buttonShow);
         buttonShow.setEnabled(false);
+    }
+
+    private void populateUiWithCurrentCounters() {
+        TextView htmlStatsTextView = (TextView)findViewById(R.id.labelStats);
+        String text = "<b><font color='#008000'>" + currentQuestion.getCountRight() + "</font> / <font color='red'>" + currentQuestion.getCountWrong() + "</font></b>";
+        htmlStatsTextView.setText(Html.fromHtml(text)); // , TextView.BufferType.SPANNABLE
     }
 
     private void toggleAnswerVisibility() {

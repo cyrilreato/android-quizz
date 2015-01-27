@@ -81,13 +81,12 @@ public class SyncActivity extends Activity {
         ArrayList<Question> new_questions = NetworkHelper.parseNewQuestionsJson(result);
         if(new_questions != null) {
             List<Integer> nb_list = DBController.findAllQuestionsNb(this);
-            System.out.println(nb_list);
             for (Question q : new_questions) {
                 if(nb_list != null && nb_list.contains(q.getNb())){
-                    System.out.println("Update question " + q.getNb());
+                    //System.out.println("Update question " + q.getNb());
                     DBController.updateQuestionFromNb(this, q);
                 }else{
-                    System.out.println("Add question " + q.getNb());
+                    //System.out.println("Add question " + q.getNb());
                     DBController.addQuestion(this, q);
                 }
 
