@@ -82,10 +82,11 @@ public class DBController {
         SQLiteDatabase db = SQLiteHelper.getInstance(context).getReadableDatabase();
         String query;
         if(currentId==0){
-            query = "SELECT id, nb, question, answer, count_right, count_wrong, datemod, quizz_id FROM question ORDER BY id LIMIT 1 OFFSET " + n;
+            query = "SELECT id, nb, question, answer, count_right, count_wrong, datemod, quizz_id FROM question ORDER BY count_wrong / ifnull(count_right+count_wrong, 1), id LIMIT 1 OFFSET " + n;
         }else{
-            query = "SELECT id, nb, question, answer, count_right, count_wrong, datemod, quizz_id FROM question WHERE id != " + currentId + " ORDER BY id LIMIT 1 OFFSET " + n;
+            query = "SELECT id, nb, question, answer, count_right, count_wrong, datemod, quizz_id FROM question WHERE id != " + currentId + " ORDER BY count_wrong / ifnull(count_right+count_wrong, 1), id LIMIT 1 OFFSET " + n;
         }
+
         Cursor cursor = db.rawQuery(query, null);
         if(cursor!=null){
             cursor.moveToFirst();

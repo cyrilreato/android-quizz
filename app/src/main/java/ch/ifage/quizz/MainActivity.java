@@ -17,6 +17,7 @@ public class MainActivity extends Activity {
     private Question currentQuestion;
     private boolean show = true;
     public static boolean newQuestionOnBack = false;
+    private int qCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,9 @@ public class MainActivity extends Activity {
         // Database init
         //resetTableWithDummyQuestions();
 
+        // Get questions count
+        qCount = DBController.findQuestionsCount(this);
+
         // Get random question and set UI
         boolean success = loadRandomQuestion();
         if(success){
@@ -36,7 +40,6 @@ public class MainActivity extends Activity {
         }
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -71,7 +74,6 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-
     public void onClickShow(View view) {
         toggleAnswerVisibility();
     }
@@ -97,25 +99,15 @@ public class MainActivity extends Activity {
     }
 
     private void loadAndDisplayNewQuestion(){
-        boolean success = loadRandomQuestionDifferentFromCurrent();
+        //boolean success = loadRandomQuestionDifferentFromCurrent();
+        boolean success = loadWeightedQuestionDifferentFromCurrent();
         if(success){
             toggleAnswerVisibility();
             populateUiWithCurrentQuestion();
         }
     }
 
-    private void resetTableWithDummyQuestions() {
-        DBController.deleteAllQuestions(this);
-        DBController.addQuestion(this, new Question(1, "Quelle est la capitale de la <b>France</b> ?", "Paris"));
-        DBController.addQuestion(this, new Question(2, "Quelle est la capitale de la <b>Biélorussie</b> ?", "Minsk"));
-        DBController.addQuestion(this, new Question(3, "Quelle est la capitale de la <b>Grèce</b> ?", "Athènes"));
-        DBController.addQuestion(this, new Question(4, "Quelle est la capitale de la <b>Serbie</b> ?", "Belgrade"));
-        DBController.addQuestion(this, new Question(5, "Quelle est la capitale de la <b>Suède</b> ?", "Stockholm"));
-        DBController.addQuestion(this, new Question(6, "Quelle est la capitale de l'<b>Ukraine</b> ?", "Kiev"));
-    }
-
     private boolean loadRandomQuestion(){
-        int qCount = DBController.findQuestionsCount(this);
         if(qCount==0){
             return false;
         }
@@ -125,13 +117,24 @@ public class MainActivity extends Activity {
     }
 
     private boolean loadRandomQuestionDifferentFromCurrent() {
-        int qCount = DBController.findQuestionsCount(this);
         if(qCount <= 1){
             return false;
         }
         int rnd = (int) (Math.floor(Math.random() * (qCount-1)));
         int currentId = currentQuestion.getId();
         currentQuestion = DBController.findNthQuestionDifferentFromId(this, rnd, currentId);
+        return true;
+    }
+
+    private boolean loadWeightedQuestionDifferentFromCurrent() {
+        if(qCount <= 1){
+            return false;
+        }
+
+        double salt = 4; // Smaller than 5 is better
+        double exprnd = Math.log(1 - Math.random ()) / (-1 * salt);
+        int rnd = ( int) Math.floor((qCount-1) * exprnd);
+        currentQuestion = DBController.findNthQuestionDifferentFromId(this, rnd, currentQuestion.getId());
         return true;
     }
 
@@ -193,6 +196,9 @@ public class MainActivity extends Activity {
     public void onRestart(){
         //System.out.println("Main activity restart");
         if(newQuestionOnBack) {
+            // Get questions count
+            qCount = DBController.findQuestionsCount(this);
+
             // Get random question and set UI
             boolean success = loadRandomQuestion();
             if (success) {
