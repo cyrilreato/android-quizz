@@ -4,6 +4,7 @@ import ch.ifage.quizz.model.Quizz;
 import ch.ifage.quizz.sqlite.DBController;
 import ch.ifage.quizz.network.NetworkHelper;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -128,7 +129,9 @@ public class SyncActivity extends Activity {
 
         hideSpinner();
 
-        MainActivity.newQuestionOnBack = true;
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("syncDone", 1);
+        setResult(RESULT_OK, returnIntent);
 
     }
 

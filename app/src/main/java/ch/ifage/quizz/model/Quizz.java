@@ -18,7 +18,7 @@ public class Quizz {
     public Quizz(){}
 
     public String toString(){
-        return "Quizz [id=" + id + ", name=" + name + ", description=" + description + ", datemod=" + getStringDatemod() + "]";
+        return name;
     }
 
     public int getId() {

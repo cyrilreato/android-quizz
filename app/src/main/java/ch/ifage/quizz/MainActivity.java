@@ -15,8 +15,8 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
 
     private Question currentQuestion;
+    private int currentQuizzId;
     private boolean show = true;
-    public static boolean newQuestionOnBack = false;
     private int qCount;
 
     @Override
@@ -29,6 +29,10 @@ public class MainActivity extends Activity {
 
         // Database init
         //resetTableWithDummyQuestions();
+
+        // Get last quizz ID
+        currentQuizzId = DBController.findLastQuizzId(this);
+        System.out.println("current quizz id " + currentQuizzId);
 
         // Get questions count
         qCount = DBController.findQuestionsCount(this);
@@ -52,19 +56,17 @@ public class MainActivity extends Activity {
         int id = item.getItemId();
         if(id == R.id.quizz_settings){
             Intent i = new Intent(this, QuizzActivity.class);
-            startActivity(i);
-        }
-        if(id == R.id.sync_settings){
+            i.putExtra("currentQuizzId", currentQuizzId);
+            startActivityForResult(i, 1);
+        }else if(id == R.id.sync_settings){
             Intent i = new Intent(this, SyncActivity.class);
-            //i.putExtra("originator", this.getClass().getName());
-            startActivity(i);
-        }
-        if(id == R.id.deleteall_settings){
+            startActivityForResult(i, 2);
+        }else if(id == R.id.deleteall_settings){
             DBController.deleteAllQuestions(this);
+            DBController.deleteAllQuizz(this);
             DBController.resetLastSyncDate(this);
             populateUiWithNoQuestion();
-        }
-        if(id == R.id.resetcounters_settings){
+        }else if(id == R.id.resetcounters_settings){
             DBController.resetAllCounters(this);
             currentQuestion.setCountRight(0);
             currentQuestion.setCountWrong(0);
@@ -192,23 +194,32 @@ public class MainActivity extends Activity {
         show = !show;
     }
 
+
     @Override
-    public void onRestart(){
-        //System.out.println("Main activity restart");
-        if(newQuestionOnBack) {
-            // Get questions count
-            qCount = DBController.findQuestionsCount(this);
-
-            // Get random question and set UI
-            boolean success = loadRandomQuestion();
-            if (success) {
-                populateUiWithCurrentQuestion();
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode == 1){ // Back from Quizz selection
+            if(resultCode == RESULT_OK){
+                int returnQuizzId = Integer.parseInt(data.getStringExtra("quizzId"));
+                if(returnQuizzId != currentQuizzId) {
+                    currentQuizzId = returnQuizzId;
+                    // TODO Load new questions based on new Quizz
+                }
             }
-            newQuestionOnBack = false;
+        }else if(requestCode == 2){ // Back from Sync settings
+            if(resultCode == RESULT_OK){
+                int syncDone = data.getIntExtra("syncDone", 0);
+                if(syncDone == 1){
+                    // Get questions count
+                    qCount = DBController.findQuestionsCount(this);
+
+                    // Get random question and set UI
+                    boolean success = loadRandomQuestion();
+                    if (success) {
+                        populateUiWithCurrentQuestion();
+                    }
+                }
+            }
         }
-        super.onRestart();
     }
-
-
 
 }

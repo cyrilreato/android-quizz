@@ -7,7 +7,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     private static SQLiteHelper sInstance;
     private final Context myContext;
-    private static final int DATABASE_VERSION = 13;
+    private static final int DATABASE_VERSION = 14;
     private static final String DATABASE_NAME = "QuizzDB";
 
 
@@ -45,10 +45,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                 "datemod TEXT " +
                 ")";
         String CREATE_CONFIG_TABLE = "CREATE TABLE quizz_config (" +
-                "last_sync TEXT " +
+                "last_sync TEXT, " +
+                "last_quizz_id INTEGER DEFAULT 0 " +
                 ")";
 
-        String INSERT_CONFIG_TABLE = "INSERT INTO quizz_config VALUES (null)";
+        String INSERT_CONFIG_TABLE = "INSERT INTO quizz_config(last_sync, last_quizz_id) VALUES (null, 0)";
 
         db.execSQL(CREATE_QUIZZ_TABLE);
         db.execSQL(CREATE_QUESTION_TABLE);

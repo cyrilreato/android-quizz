@@ -8,4 +8,59 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin">
 
+    <TextView
+        android:id="@+id/labelQuizz"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        android:text="@string/current_quizz_title" />
+
+    <TextView
+        android:id="@+id/labelCurrentQuizz"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/labelCurrentQuizzTitle"
+        android:layout_alignLeft="@+id/labelCurrentQuizzTitle"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/back"
+        android:ems="10"
+        android:padding="5dp" />
+
+    <TextView
+        android:id="@+id/labelQuizzList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        android:layout_below="@+id/labelCurrentQuizz"
+        android:text="@string/available_quizz_title"/>
+
+    <CheckBox
+        android:id="@+id/chkAllQuizz"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/all_quizz"
+        android:onClick="onClickAllQuizz"
+        android:layout_below="@+id/labelQuizzList" />/>
+
+    <Spinner
+        android:id="@+id/quizz_spinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chkAllQuizz" />
+
+
+    <Button
+        android:id="@+id/buttonShow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/set_quizz"
+        android:onClick="onClickSetQuizz"
+        android:layout_below="@+id/quizz_spinner"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp" />
+
 </LinearLayout>

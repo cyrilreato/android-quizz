@@ -48,6 +48,45 @@ public class DBController {
         return lastSync;
     }
 
+    public static int findLastQuizzId(Context context){
+        int lastQuizzId;
+        String query = "SELECT last_quizz_id FROM quizz_config";
+        SQLiteDatabase db = SQLiteHelper.getInstance(context).getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor!=null){
+            cursor.moveToFirst();
+        }
+        if(cursor.getCount()==0){
+            lastQuizzId = 0;
+        }else {
+            lastQuizzId = cursor.getInt(0);
+        }
+        cursor.close();
+        return lastQuizzId;
+    }
+
+    public static Quizz findQuizz(Context context, int id){
+        SQLiteDatabase db = SQLiteHelper.getInstance(context).getReadableDatabase();
+        Cursor cursor = db.query("quizz",
+                new String[]{"id", "name", "description", "datemod"},
+                "id = ?",
+                new String[]{String.valueOf(id)},
+                null,
+                null,
+                null,
+                null);
+        if(cursor!=null){
+            cursor.moveToFirst();
+        }
+        Quizz quizz = new Quizz();
+        quizz.setId(cursor.getInt(0));
+        quizz.setName(cursor.getString(1));
+        quizz.setDescription(cursor.getString(2));
+        quizz.setStringDatemod(cursor.getString(3));
+        cursor.close();
+        return quizz;
+    }
+
     public static Question findQuestion(Context context, int id){
         SQLiteDatabase db = SQLiteHelper.getInstance(context).getReadableDatabase();
         Cursor cursor = db.query("question",
@@ -106,15 +145,15 @@ public class DBController {
     }
 
     public static List<Question> findAllQuestions(Context context){
-        List<Question> questions = new LinkedList<Question>();
+        List<Question> questions = new ArrayList<Question>();
         String query = "SELECT id, nb, question, answer, count_right, count_wrong, datemod, quizz_id FROM question";
 
         SQLiteDatabase db = SQLiteHelper.getInstance(context).getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
-        Question question = new Question();
         if(cursor.moveToFirst()){
             do{
+                Question question = new Question();
                 question.setId(cursor.getInt(0));
                 question.setNb(cursor.getInt(1));
                 question.setQuestion(cursor.getString(2));
@@ -145,6 +184,27 @@ public class DBController {
         }
         cursor.close();
         return questions_nb;
+    }
+
+    public static List<Quizz> findAllQuizz(Context context){
+        List<Quizz> quizzes = new ArrayList<Quizz>();
+        String query = "SELECT id, name, description, datemod FROM quizz";
+
+        SQLiteDatabase db = SQLiteHelper.getInstance(context).getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if(cursor.moveToFirst()){
+            do{
+                Quizz quizz = new Quizz();
+                quizz.setId(cursor.getInt(0));
+                quizz.setName(cursor.getString(1));
+                quizz.setDescription(cursor.getString(2));
+                quizz.setStringDatemod(cursor.getString(3));
+                quizzes.add(quizz);
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+        return quizzes;
     }
 
     public static List<Integer> findAllQuizzId(Context context){
@@ -266,6 +326,12 @@ public class DBController {
         db.delete("question",
                 "nb=?",
                 new String[]{ String.valueOf(nb)} );
+        db.close();
+    }
+
+    public static void deleteAllQuizz(Context context){
+        SQLiteDatabase db = SQLiteHelper.getInstance(context).getWritableDatabase();
+        db.delete("quizz", null,  null);
         db.close();
     }
 

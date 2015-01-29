@@ -16,4 +16,8 @@
     <string name="quizz_settings">Choose Quizz</string>
     <string name="initial_stats">0/0</string>
     <string name="title_activity_quizz">Quizz</string>
+    <string name="current_quizz_title">Current Quizz</string>
+    <string name="available_quizz_title">Available Quizz</string>
+    <string name="all_quizz">All quizz</string>
+    <string name="set_quizz">Set Quizz</string>
 </resources>
