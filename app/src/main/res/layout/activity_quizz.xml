@@ -25,7 +25,9 @@
         android:layout_alignLeft="@+id/labelCurrentQuizzTitle"
         android:layout_alignParentRight="true"
         android:background="@drawable/back"
+        android:minLines="5"
         android:ems="10"
+        android:layout_marginBottom="5dp"
         android:padding="5dp" />
 
     <TextView
@@ -38,28 +40,28 @@
         android:layout_below="@+id/labelCurrentQuizz"
         android:text="@string/available_quizz_title"/>
 
+    <Spinner
+        android:id="@+id/quizz_spinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/labelQuizzList" />
+
     <CheckBox
         android:id="@+id/chkAllQuizz"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/all_quizz"
         android:onClick="onClickAllQuizz"
-        android:layout_below="@+id/labelQuizzList" />/>
-
-    <Spinner
-        android:id="@+id/quizz_spinner"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/chkAllQuizz" />
+        android:layout_below="@+id/quizz_spinner" />
 
 
     <Button
         android:id="@+id/buttonShow"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/set_quizz"
         android:onClick="onClickSetQuizz"
-        android:layout_below="@+id/quizz_spinner"
+        android:layout_below="@+id/chkAllQuizz"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp" />
 

@@ -3,6 +3,7 @@ package ch.ifage.quizz;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -42,7 +43,7 @@ public class QuizzActivity extends Activity {
         currentQuizzId = i.getIntExtra("currentQuizzId", 0);
         if(currentQuizzId != 0){
             Quizz q = DBController.findQuizz(this, currentQuizzId);
-            txtCurrentQuizz.setText(q.getName());
+            txtCurrentQuizz.setText(Html.fromHtml("<b>" + q.getName() + "</b><br>" + Html.fromHtml(q.getDescription())));
         }else{
             txtCurrentQuizz.setText("All Quizz");
             chkAllQuizz.setChecked(true);
@@ -65,11 +66,18 @@ public class QuizzActivity extends Activity {
             Intent returnIntent = new Intent();
             returnIntent.putExtra("quizzId", "0");
             setResult(RESULT_OK, returnIntent);
+
+            DBController.updateLastQuizzId(this, 0);
+
         }else {
             txtCurrentQuizz.setText(((Quizz) spinner.getSelectedItem()).getName());
             Intent returnIntent = new Intent();
             returnIntent.putExtra("quizzId", String.valueOf(((Quizz) spinner.getSelectedItem()).getId()));
             setResult(RESULT_OK, returnIntent);
+
+            DBController.updateLastQuizzId(this, ((Quizz) spinner.getSelectedItem()).getId());
         }
     }
+
+    private void populateCurrentQuizz(){}
 }

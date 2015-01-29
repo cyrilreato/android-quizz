@@ -17,9 +17,14 @@ import ch.ifage.quizz.model.Quizz;
 
 public class DBController {
 
-    public static int findQuestionsCount(Context context){
+    public static int findQuestionsCount(Context context, int quizzId){
         int questionsCount;
-        String query = "SELECT count(*) FROM question";
+        String query;
+        if(quizzId == 0){
+            query = "SELECT count(*) FROM question";
+        }else {
+            query = "SELECT count(*) FROM question WHERE quizz_id = " + quizzId;
+        }
 
         SQLiteDatabase db = SQLiteHelper.getInstance(context).getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -113,18 +118,20 @@ public class DBController {
         return question;
     }
 
-    public static Question findNthQuestion(Context context, int n){
-        return findNthQuestionDifferentFromId(context, n, 0);
+    public static Question findNthQuestion(Context context, int n, int quizzId){
+        return findNthQuestionDifferentFromId(context, n, 0, quizzId);
     }
 
-    public static Question findNthQuestionDifferentFromId(Context context, int n, int currentId){
+    public static Question findNthQuestionDifferentFromId(Context context, int n, int currentId, int quizzId){
         SQLiteDatabase db = SQLiteHelper.getInstance(context).getReadableDatabase();
-        String query;
-        if(currentId==0){
-            query = "SELECT id, nb, question, answer, count_right, count_wrong, datemod, quizz_id FROM question ORDER BY count_wrong / ifnull(count_right+count_wrong, 1), id LIMIT 1 OFFSET " + n;
-        }else{
-            query = "SELECT id, nb, question, answer, count_right, count_wrong, datemod, quizz_id FROM question WHERE id != " + currentId + " ORDER BY count_wrong / ifnull(count_right+count_wrong, 1), id LIMIT 1 OFFSET " + n;
+        String query = "SELECT id, nb, question, answer, count_right, count_wrong, datemod, quizz_id FROM question WHERE 1 = 1 ";
+        if(currentId!=0){
+            query += "AND id != " + currentId + " ";
         }
+        if(quizzId!=0){
+            query += "AND quizz_id = " + quizzId + " ";
+        }
+        query += "ORDER BY count_wrong / ifnull(count_right+count_wrong, 1), id LIMIT 1 OFFSET " + n;
 
         Cursor cursor = db.rawQuery(query, null);
         if(cursor!=null){
@@ -341,13 +348,9 @@ public class DBController {
         db.close();
     }
 
-    public static void updateLastSyncDate(Context context){
-        Calendar cal = Calendar.getInstance();
-        Date now = cal.getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-        String nowString = sdf.format(now);
+    public static void updateLastQuizzId(Context context, int quizzId){
         ContentValues values = new ContentValues();
-        values.put("last_sync", nowString);
+        values.put("last_quizz_id", quizzId);
 
         SQLiteDatabase db = SQLiteHelper.getInstance(context).getWritableDatabase();
         db.update("quizz_config",
@@ -361,6 +364,22 @@ public class DBController {
         SQLiteDatabase db = SQLiteHelper.getInstance(context).getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("last_sync", "");
+        db.update("quizz_config",
+                values,
+                null,
+                null);
+        db.close();
+    }
+
+    public static void updateLastSyncDate(Context context){
+        Calendar cal = Calendar.getInstance();
+        Date now = cal.getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        String nowString = sdf.format(now);
+        ContentValues values = new ContentValues();
+        values.put("last_sync", nowString);
+
+        SQLiteDatabase db = SQLiteHelper.getInstance(context).getWritableDatabase();
         db.update("quizz_config",
                 values,
                 null,

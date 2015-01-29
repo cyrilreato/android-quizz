@@ -41,13 +41,14 @@
 
     <Button
         android:id="@+id/buttonShow"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/show"
         android:onClick="onClickShow"
         android:layout_below="@+id/textQuestion"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="5dp" />
 
     <TextView
         android:id="@+id/labelAnswer"
@@ -74,21 +75,23 @@
         android:padding="5dp" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/textAnswer"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="0dp">
         <Button
             android:id="@+id/buttonWrong"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="@string/wrong"
             android:onClick="onClickWrong" />
 
         <Button
             android:id="@+id/buttonRight"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="@string/right"
             android:onClick="onClickRight" />

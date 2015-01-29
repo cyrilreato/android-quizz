@@ -24,11 +24,12 @@
         android:minLines="6"
         android:layout_alignLeft="@+id/labelSync"
         android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
         android:ems="10" />
 
     <Button
         android:id="@+id/buttonSync"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/labelSyncStatus"
         android:layout_centerHorizontal="true"

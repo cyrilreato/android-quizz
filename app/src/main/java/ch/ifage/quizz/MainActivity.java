@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
         System.out.println("current quizz id " + currentQuizzId);
 
         // Get questions count
-        qCount = DBController.findQuestionsCount(this);
+        qCount = DBController.findQuestionsCount(this, currentQuizzId);
 
         // Get random question and set UI
         boolean success = loadRandomQuestion();
@@ -114,7 +114,7 @@ public class MainActivity extends Activity {
             return false;
         }
         int rnd = (int) (Math.floor(Math.random() * (qCount)));
-        currentQuestion = DBController.findNthQuestion(this, rnd);
+        currentQuestion = DBController.findNthQuestion(this, rnd, currentQuizzId);
         return true;
     }
 
@@ -124,7 +124,7 @@ public class MainActivity extends Activity {
         }
         int rnd = (int) (Math.floor(Math.random() * (qCount-1)));
         int currentId = currentQuestion.getId();
-        currentQuestion = DBController.findNthQuestionDifferentFromId(this, rnd, currentId);
+        currentQuestion = DBController.findNthQuestionDifferentFromId(this, rnd, currentId, currentQuizzId);
         return true;
     }
 
@@ -136,7 +136,7 @@ public class MainActivity extends Activity {
         double salt = 4; // Smaller than 5 is better
         double exprnd = Math.log(1 - Math.random ()) / (-1 * salt);
         int rnd = ( int) Math.floor((qCount-1) * exprnd);
-        currentQuestion = DBController.findNthQuestionDifferentFromId(this, rnd, currentQuestion.getId());
+        currentQuestion = DBController.findNthQuestionDifferentFromId(this, rnd, currentQuestion.getId(), currentQuizzId);
         return true;
     }
 
@@ -210,7 +210,7 @@ public class MainActivity extends Activity {
                 int syncDone = data.getIntExtra("syncDone", 0);
                 if(syncDone == 1){
                     // Get questions count
-                    qCount = DBController.findQuestionsCount(this);
+                    qCount = DBController.findQuestionsCount(this, currentQuizzId);
 
                     // Get random question and set UI
                     boolean success = loadRandomQuestion();
