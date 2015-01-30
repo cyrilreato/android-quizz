@@ -96,13 +96,10 @@ public class SyncActivity extends Activity {
             List<Integer> id_list = DBController.findAllQuizzId(this);
             for(Quizz q : new_quizz){
                 if(id_list != null && id_list.contains(q.getId())){
-                    //System.out.println("Update quizz " + q.getId());
                     DBController.updateQuizzFromId(this, q);
                 }else{
-                    //System.out.println("Add quizz " + q.getId());
                     DBController.addQuizz(this, q);
                 }
-                System.out.println(q);
             }
         }
 
@@ -112,10 +109,8 @@ public class SyncActivity extends Activity {
             List<Integer> nb_list = DBController.findAllQuestionsNb(this);
             for (Question q : new_questions) {
                 if(nb_list != null && nb_list.contains(q.getNb())){
-                    //System.out.println("Update question " + q.getNb());
                     DBController.updateQuestionFromNb(this, q);
                 }else{
-                    //System.out.println("Add question " + q.getNb());
                     DBController.addQuestion(this, q);
                 }
 

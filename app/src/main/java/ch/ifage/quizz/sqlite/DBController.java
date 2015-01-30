@@ -353,10 +353,7 @@ public class DBController {
         values.put("last_quizz_id", quizzId);
 
         SQLiteDatabase db = SQLiteHelper.getInstance(context).getWritableDatabase();
-        db.update("quizz_config",
-                values,
-                null,
-                null);
+        db.update("quizz_config", values, null, null);
         db.close();
     }
 
@@ -364,10 +361,7 @@ public class DBController {
         SQLiteDatabase db = SQLiteHelper.getInstance(context).getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("last_sync", "");
-        db.update("quizz_config",
-                values,
-                null,
-                null);
+        db.update("quizz_config", values, null, null);
         db.close();
     }
 
@@ -380,22 +374,23 @@ public class DBController {
         values.put("last_sync", nowString);
 
         SQLiteDatabase db = SQLiteHelper.getInstance(context).getWritableDatabase();
-        db.update("quizz_config",
-                values,
-                null,
-                null);
+        db.update("quizz_config", values, null, null);
         db.close();
     }
 
-    public static void resetAllCounters(Context context){
+    public static void resetAllCounters(Context context, int quizzId){
         SQLiteDatabase db = SQLiteHelper.getInstance(context).getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("count_wrong", 0);
         values.put("count_right", 0);
-        db.update("question",
-                values,
-                null,
-                null);
+        if(quizzId==0){
+            db.update("question", values, null, null);
+        }else {
+            db.update("question",
+                    values,
+                    "quizz_id = ?",
+                    new String[]{String.valueOf(quizzId)});
+        }
         db.close();
     }
 }

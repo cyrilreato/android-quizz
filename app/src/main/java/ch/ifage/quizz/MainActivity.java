@@ -25,14 +25,10 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         toggleAnswerVisibility();
 
-        System.out.println("-------------------- Starting app");
-
-        // Database init
-        //resetTableWithDummyQuestions();
+        //System.out.println("-------------------- Starting app");
 
         // Get last quizz ID
         currentQuizzId = DBController.findLastQuizzId(this);
-        System.out.println("current quizz id " + currentQuizzId);
 
         // Get questions count
         qCount = DBController.findQuestionsCount(this, currentQuizzId);
@@ -67,7 +63,7 @@ public class MainActivity extends Activity {
             DBController.resetLastSyncDate(this);
             populateUiWithNoQuestion();
         }else if(id == R.id.resetcounters_settings){
-            DBController.resetAllCounters(this);
+            DBController.resetAllCounters(this, currentQuizzId);
             currentQuestion.setCountRight(0);
             currentQuestion.setCountWrong(0);
             populateUiWithCurrentCounters();
@@ -202,17 +198,18 @@ public class MainActivity extends Activity {
                 int returnQuizzId = Integer.parseInt(data.getStringExtra("quizzId"));
                 if(returnQuizzId != currentQuizzId) {
                     currentQuizzId = returnQuizzId;
-                    // TODO Load new questions based on new Quizz
+                    qCount = DBController.findQuestionsCount(this, currentQuizzId);
+                    boolean success = loadRandomQuestion();
+                    if (success) {
+                        populateUiWithCurrentQuestion();
+                    }
                 }
             }
         }else if(requestCode == 2){ // Back from Sync settings
             if(resultCode == RESULT_OK){
                 int syncDone = data.getIntExtra("syncDone", 0);
                 if(syncDone == 1){
-                    // Get questions count
                     qCount = DBController.findQuestionsCount(this, currentQuizzId);
-
-                    // Get random question and set UI
                     boolean success = loadRandomQuestion();
                     if (success) {
                         populateUiWithCurrentQuestion();
