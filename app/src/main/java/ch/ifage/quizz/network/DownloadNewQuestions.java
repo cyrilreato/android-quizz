@@ -5,7 +5,7 @@ import ch.ifage.quizz.SyncActivity;
 
 public class DownloadNewQuestions extends ADownloadWebpageTask implements IDownloadWebpage {
 
-    String URL = "http://www.reato.ch/quizz/questions.php";
+    String URL = "http://www.reato.ch/quizz/json_quizz.php";
 
     public DownloadNewQuestions(Activity activity, String maxDate){
         super(activity);
