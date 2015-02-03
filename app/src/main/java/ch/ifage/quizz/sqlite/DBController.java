@@ -150,6 +150,21 @@ public class DBController {
         return question;
     }
 
+    public static Cursor fetchAllQuestionsForList(Context context, int quizzId){
+
+        String query = "SELECT id as _id, nb, '<b>Q' || nb || ': </b>' || question as question, '<b>A: </b>' || answer as answer FROM question ";
+        if(quizzId!=0){
+            query += "WHERE quizz_id = " + quizzId + " ";
+        }
+        query += "ORDER BY nb DESC";
+        SQLiteDatabase db = SQLiteHelper.getInstance(context).getReadableDatabase();
+        Cursor cur = db.rawQuery(query, null);
+        if(cur != null){
+            cur.moveToFirst();
+        }
+        return cur;
+    }
+
     public static List<Question> findAllQuestions(Context context){
         List<Question> questions = new ArrayList<Question>();
         String query = "SELECT id, nb, question, answer, count_right, count_wrong, datemod, quizz_id FROM question";

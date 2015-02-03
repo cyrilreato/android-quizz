@@ -13,11 +13,16 @@
     <string name="title_activity_sync">Synchronization</string>
     <string name="synchronize">Synchronize</string>
     <string name="deleteall_settings">Delete all questions</string>
-    <string name="quizz_settings">Choose Quizz</string>
+    <string name="quizz_settings">Change Quizz</string>
+    <string name="view_settings">View Quizz</string>
     <string name="initial_stats">0/0</string>
     <string name="title_activity_quizz">Quizz</string>
     <string name="current_quizz_title">Current Quizz</string>
     <string name="available_quizz_title">Available Quizz</string>
     <string name="all_quizz">All quizz</string>
     <string name="set_quizz">Set Quizz</string>
+    <string name="title_activity_list_view">ListViewActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="questions_list">Questions list</string>
+    <string name="type_here_filter">Type here to filter...</string>
 </resources>

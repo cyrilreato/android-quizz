@@ -50,10 +50,14 @@ public class MainActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(id == R.id.quizz_settings){
+        if(id == R.id.quizz_settings) {
             Intent i = new Intent(this, QuizzActivity.class);
             i.putExtra("currentQuizzId", currentQuizzId);
             startActivityForResult(i, 1);
+        }else if(id == R.id.view_settings){
+            Intent i = new Intent(this, ListViewActivity.class);
+            i.putExtra("currentQuizzId", currentQuizzId);
+            startActivity(i);
         }else if(id == R.id.sync_settings){
             Intent i = new Intent(this, SyncActivity.class);
             startActivityForResult(i, 2);
