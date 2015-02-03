@@ -132,7 +132,6 @@ public class DBController {
             query += "AND quizz_id = " + quizzId + " ";
         }
         query += "ORDER BY count_wrong / ifnull(count_right+count_wrong, 1), id LIMIT 1 OFFSET " + n;
-
         Cursor cursor = db.rawQuery(query, null);
         if(cursor!=null){
             cursor.moveToFirst();

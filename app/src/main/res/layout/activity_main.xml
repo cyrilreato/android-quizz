@@ -33,7 +33,7 @@
         android:layout_alignLeft="@+id/labelQuestion"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/labelQuestion"
-        android:minLines="8"
+        android:minLines="6"
         android:singleLine="false"
         android:background="@drawable/back"
         android:ems="10"
@@ -61,24 +61,29 @@
         android:layout_below="@+id/buttonShow"
         android:layout_alignParentStart="true" />
 
-    <TextView
-        android:id="@+id/textAnswer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ScrollView
+        android:id="@+id/scrollAnswer"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
         android:layout_alignLeft="@+id/labelAnswer"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/labelAnswer"
+        android:layout_below="@+id/labelAnswer">
+    <TextView
+        android:id="@+id/textAnswer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:minLines="8"
         android:singleLine="false"
         android:background="@drawable/back"
         android:ems="10"
         android:padding="5dp" />
+    </ScrollView>
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/textAnswer"
+        android:layout_below="@id/scrollAnswer"
         android:layout_marginTop="0dp">
         <Button
             android:id="@+id/buttonWrong"

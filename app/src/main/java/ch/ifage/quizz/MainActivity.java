@@ -128,10 +128,12 @@ public class MainActivity extends Activity {
         if(qCount <= 1){
             return false;
         }
-
         double salt = 4; // Smaller than 5 is better
         double exprnd = Math.log(1 - Math.random ()) / (-1 * salt);
-        int rnd = ( int) Math.floor((qCount-1) * exprnd);
+        while(exprnd > 1){
+            exprnd = Math.log(1 - Math.random ()) / (-1 * salt);
+        }
+        int rnd = ( int) Math.round((qCount-2) * exprnd); // -1 to remove same question and -1 because we start at 0
         currentQuestion = DBController.findNthQuestionDifferentFromId(this, rnd, currentQuestion.getId(), currentQuizzId);
         return true;
     }
