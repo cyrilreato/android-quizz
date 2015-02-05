@@ -150,11 +150,14 @@ public class DBController {
         return question;
     }
 
-    public static Cursor fetchAllQuestionsForList(Context context, int quizzId){
+    public static Cursor fetchAllQuestionsForList(Context context, int quizzId, String constraint){
 
-        String query = "SELECT id as _id, nb, '<b>Q' || nb || ': </b>' || question as question, '<b>A: </b>' || answer as answer FROM question ";
+        String query = "SELECT id as _id, nb, '<b>Q' || nb || ': ' || question || ' <font color=\"#008000\">' || count_right || '</font>/<font color=\"red\">' || count_wrong || '</font></b>' as question, '<b>A: </b>' || answer as answer FROM question WHERE 1=1 ";
         if(quizzId!=0){
-            query += "WHERE quizz_id = " + quizzId + " ";
+            query += "and quizz_id = " + quizzId + " ";
+        }
+        if(constraint!=null){
+            query += "and (nb = '" + constraint + "' or question like '%" + constraint + "%' or answer like '%" + constraint + "%') ";
         }
         query += "ORDER BY nb DESC";
         SQLiteDatabase db = SQLiteHelper.getInstance(context).getReadableDatabase();
