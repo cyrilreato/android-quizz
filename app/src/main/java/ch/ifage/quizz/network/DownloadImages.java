@@ -44,7 +44,7 @@ public class DownloadImages extends AsyncTask<String, Integer, List<Image>>{
 
     @Override
     protected void onPreExecute() {
-        System.out.println("Pre execute");
+//        System.out.println("Pre execute");
         progress = 0;
 //        pb.setVisibility(View.VISIBLE);
 //        percent.setVisibility(View.VISIBLE);
@@ -58,7 +58,6 @@ public class DownloadImages extends AsyncTask<String, Integer, List<Image>>{
         bitmaps = new ArrayList<Image>();
         for(String url : urls) {
             String fullUrl = URL_PREFIX + url;
-            System.out.println("Trying to load " + fullUrl);
             bmp = getBitmapFromURL(fullUrl);
             bitmaps.add(new Image(url, bmp));
         }

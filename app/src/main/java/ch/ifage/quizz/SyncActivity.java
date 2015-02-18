@@ -117,7 +117,7 @@ public class SyncActivity extends Activity {
             }
         }
 
-        // TODO Load images
+        // Load images
         ArrayList<String> newImages = NetworkHelper.parseNewImagesJson(result);
         NetworkHelper.doSyncImages(this, newImages);
 

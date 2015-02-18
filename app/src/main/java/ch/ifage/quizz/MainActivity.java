@@ -5,6 +5,8 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import ch.ifage.quizz.filesystem.FileHelper;
 import ch.ifage.quizz.model.Question;
 import ch.ifage.quizz.sqlite.DBController;
 import android.app.Activity;
@@ -16,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
+import java.util.regex.Pattern;
 
 public class MainActivity extends Activity {
 
@@ -43,8 +46,6 @@ public class MainActivity extends Activity {
         if(success){
             populateUiWithCurrentQuestion();
         }
-
-
 
 
         // -------------------------------------------------------------------
@@ -87,6 +88,8 @@ public class MainActivity extends Activity {
         }else if(id == R.id.deleteall_settings){
             DBController.deleteAllQuestions(this);
             DBController.deleteAllQuizz(this);
+            FileHelper fileHelper = FileHelper.getInstance(this);
+            fileHelper.deleteAllLocalImages();
             DBController.resetLastSyncDate(this);
             populateUiWithNoQuestion();
         }else if(id == R.id.resetcounters_settings){

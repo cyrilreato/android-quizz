@@ -51,6 +51,19 @@ public final class FileHelper {
 
     }
 
+    public void deleteAllLocalImages(){
+
+        File directory = new File(context.getFilesDir().getPath());
+        // Listing files
+        File[] fList = directory.listFiles();
+        for(File file : fList) {
+            if(file.getName().matches("(?i:.*.(png|jpg)$)")){
+                file.delete();
+            }
+        }
+
+    }
+
     public void showFreeSpace(){
         // Free space
         File directory = new File(context.getFilesDir().getPath());

@@ -108,7 +108,6 @@ public class NetworkHelper {
                 question.setStringDatemod(q.getString("datemod").toString());
                 new_questions.add(question);
 
-                System.out.println("Need to load image " + question.getImagePath());
             }
         } catch (Exception e) {
             System.out.println("JSON parsing crashed");
@@ -136,7 +135,7 @@ public class NetworkHelper {
             for (int i = 0; i < jquestions.length(); i++) {
                 Question question = new Question();
                 JSONObject q = (JSONObject) jquestions.get(i);
-                if(q.getString("image_path")!=null) {
+                if(!q.getString("image_path").isEmpty()) {
                     newImages.add(q.getString("image_path").toString());
                 }
             }
