@@ -2,6 +2,7 @@ package ch.ifage.quizz.network;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -41,6 +42,13 @@ public class NetworkHelper {
             new DownloadCountQuestions(syncActivity, maxDate).execute();
         } else {
             System.out.println("No network connection available.");
+        }
+    }
+
+    public static void doSyncImages(SyncActivity syncActivity, List<String> images){
+        if(isNetworkAvailable(syncActivity)){
+            String[] arImages = images.toArray(new String[images.size()]);
+            new DownloadImages(syncActivity).execute(arImages);
         }
     }
 
@@ -96,9 +104,11 @@ public class NetworkHelper {
                 question.setQuizzId(Integer.parseInt(q.get("quizz_id").toString()));
                 question.setQuestion(q.getString("question").toString());
                 question.setAnswer(q.getString("answer").toString());
+                question.setImagePath(q.getString("image_path").toString());
                 question.setStringDatemod(q.getString("datemod").toString());
                 new_questions.add(question);
 
+                System.out.println("Need to load image " + question.getImagePath());
             }
         } catch (Exception e) {
             System.out.println("JSON parsing crashed");
@@ -107,6 +117,38 @@ public class NetworkHelper {
 
         return new_questions;
     }
+
+    public static ArrayList<String> parseNewImagesJson(String downloadedString){
+
+        ArrayList<String> newImages = null;
+
+        try {
+            JSONObject json = new JSONObject(downloadedString);
+            if (!json.has("questions_new")) {
+                return null;
+            }
+
+            JSONArray jquestions = (JSONArray) json.get("questions_new");
+            if (jquestions.length() > 0) {
+                newImages = new ArrayList<String>();
+            }
+
+            for (int i = 0; i < jquestions.length(); i++) {
+                Question question = new Question();
+                JSONObject q = (JSONObject) jquestions.get(i);
+                if(q.getString("image_path")!=null) {
+                    newImages.add(q.getString("image_path").toString());
+                }
+            }
+
+        }catch(Exception e){
+                System.out.println("JSON parsing crashed");
+                System.out.println(e.getMessage());
+        }
+
+        return newImages;
+    }
+
 
     public static ArrayList<Integer> parseDeletedQuestionsJson(String downloadedString){
         ArrayList<Integer> deleted_questions = null;

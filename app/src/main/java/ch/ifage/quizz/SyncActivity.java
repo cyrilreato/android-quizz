@@ -54,6 +54,7 @@ public class SyncActivity extends Activity {
     private void syncQuestions(String maxDate){
         maxDate = maxDate.replaceAll("[^0-9]","");
         NetworkHelper.doSync(this, maxDate);
+        // Sync images !
     }
 
     public void onLoadedQuestionsCount(String result) {
@@ -113,9 +114,12 @@ public class SyncActivity extends Activity {
                 }else{
                     DBController.addQuestion(this, q);
                 }
-
             }
         }
+
+        // TODO Load images
+        ArrayList<String> newImages = NetworkHelper.parseNewImagesJson(result);
+        NetworkHelper.doSyncImages(this, newImages);
 
         DBController.updateLastSyncDate(this);
 

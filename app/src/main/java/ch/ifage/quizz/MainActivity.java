@@ -1,5 +1,7 @@
 package ch.ifage.quizz;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,7 +12,10 @@ import android.content.Intent;
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.File;
 
 public class MainActivity extends Activity {
 
@@ -38,6 +43,24 @@ public class MainActivity extends Activity {
         if(success){
             populateUiWithCurrentQuestion();
         }
+
+
+
+
+        // -------------------------------------------------------------------
+        // Load image part
+
+        //String url = "http://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Drymoreomys_albimaculatus_002.jpg/150px-Drymoreomys_albimaculatus_002.jpg";
+        //DownloadImages mDownloader = new DownloadImages(MainActivity.this, url, new DownloadImages.ImageLoaderListener() {
+        //    @Override
+        //    public void onImageDownloaded(Bitmap bmp) {
+        //        System.out.println("Image loaded :)");
+        //        System.out.println(bmp.getByteCount());
+        //        ImageView imgQuestion = (ImageView)findViewById(R.id.imgQuestion);
+        //        imgQuestion.setImageBitmap(bmp);
+        //    }
+        //});
+        //mDownloader.execute();
 
     }
 
@@ -149,6 +172,7 @@ public class MainActivity extends Activity {
         TextView htmlAnswer = (TextView)findViewById(R.id.textAnswer);
         htmlAnswer.setText(Html.fromHtml(currentQuestion.getAnswer()));
 
+        populateUiWithCurrentImage();
         populateUiWithCurrentCounters();
 
         Button buttonShow = (Button)findViewById(R.id.buttonShow);
@@ -174,6 +198,26 @@ public class MainActivity extends Activity {
         TextView htmlStatsTextView = (TextView)findViewById(R.id.labelStats);
         String text = "<b><font color='#008000'>" + currentQuestion.getCountRight() + "</font> / <font color='red'>" + currentQuestion.getCountWrong() + "</font></b>";
         htmlStatsTextView.setText(Html.fromHtml(text)); // , TextView.BufferType.SPANNABLE
+    }
+
+    private void populateUiWithCurrentImage(){
+
+        ImageView myImage = (ImageView) findViewById(R.id.imgQuestion);
+        TextView htmlTextView = (TextView)findViewById(R.id.textQuestion);
+        if(currentQuestion.getImagePath().isEmpty()){
+            myImage.setVisibility(View.GONE);
+            htmlTextView.setMinLines(6);
+            myImage.setImageResource(0);
+            return;
+        }else{
+            myImage.setVisibility(View.VISIBLE);
+            htmlTextView.setMinLines(2);
+            File imgFile = new File(getFilesDir() + "/" + currentQuestion.getImagePath());
+            if (imgFile.exists()) {
+                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                myImage.setImageBitmap(myBitmap);
+            }
+        }
     }
 
     private void toggleAnswerVisibility() {

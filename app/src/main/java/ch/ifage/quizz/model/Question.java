@@ -13,6 +13,7 @@ public class Question {
     private int nb;
     private String question;
     private String answer;
+    private String imagePath;
     private int countRight;
     private int countWrong;
     private Date datemod;
@@ -79,6 +80,10 @@ public class Question {
     public void setAnswer(String answer) {
         this.answer = answer;
     }
+
+    public String getImagePath(){ return imagePath; }
+
+    public void setImagePath(String imagePath){ this.imagePath = imagePath; }
 
     public Date getDatemod(){
         return datemod;

@@ -95,7 +95,7 @@ public class DBController {
     public static Question findQuestion(Context context, int id){
         SQLiteDatabase db = SQLiteHelper.getInstance(context).getReadableDatabase();
         Cursor cursor = db.query("question",
-                new String[]{"id", "nb", "question","answer", "count_right", "count_wrong", "datemod", "quizz_id"},
+                new String[]{"id", "nb", "question","answer", "image_path", "count_right", "count_wrong", "datemod", "quizz_id"},
                 "id = ?",
                 new String[]{String.valueOf(id)},
                 null,
@@ -110,10 +110,11 @@ public class DBController {
         question.setNb(cursor.getInt(1));
         question.setQuestion(cursor.getString(2));
         question.setAnswer(cursor.getString(3));
-        question.setCountRight(cursor.getInt(4));
-        question.setCountWrong(cursor.getInt(5));
-        question.setStringDatemod(cursor.getString(6));
-        question.setQuizzId(cursor.getInt(7));
+        question.setImagePath(cursor.getString(4));
+        question.setCountRight(cursor.getInt(5));
+        question.setCountWrong(cursor.getInt(6));
+        question.setStringDatemod(cursor.getString(7));
+        question.setQuizzId(cursor.getInt(8));
         cursor.close();
         return question;
     }
@@ -124,7 +125,7 @@ public class DBController {
 
     public static Question findNthQuestionDifferentFromId(Context context, int n, int currentId, int quizzId){
         SQLiteDatabase db = SQLiteHelper.getInstance(context).getReadableDatabase();
-        String query = "SELECT id, nb, question, answer, count_right, count_wrong, datemod, quizz_id FROM question WHERE 1 = 1 ";
+        String query = "SELECT id, nb, question, answer, image_path, count_right, count_wrong, datemod, quizz_id FROM question WHERE 1 = 1 ";
         if(currentId!=0){
             query += "AND id != " + currentId + " ";
         }
@@ -141,10 +142,11 @@ public class DBController {
         question.setNb(cursor.getInt(1));
         question.setQuestion(cursor.getString(2));
         question.setAnswer(cursor.getString(3));
-        question.setCountRight(cursor.getInt(4));
-        question.setCountWrong(cursor.getInt(5));
-        question.setStringDatemod(cursor.getString(6));
-        question.setQuizzId(cursor.getInt(7));
+        question.setImagePath(cursor.getString(4));
+        question.setCountRight(cursor.getInt(5));
+        question.setCountWrong(cursor.getInt(6));
+        question.setStringDatemod(cursor.getString(7));
+        question.setQuizzId(cursor.getInt(8));
 
         cursor.close();
         return question;
@@ -152,7 +154,7 @@ public class DBController {
 
     public static Cursor fetchAllQuestionsForList(Context context, int quizzId, String constraint){
 
-        String query = "SELECT id as _id, nb, '<b>Q' || nb || ': ' || question || ' <font color=\"#008000\">' || count_right || '</font>/<font color=\"red\">' || count_wrong || '</font></b>' as question, '<b>A: </b>' || answer as answer FROM question WHERE 1=1 ";
+        String query = "SELECT id as _id, nb, '<b>Q' || nb || ': ' || question || ' <font color=\"#008000\">' || count_right || '</font>/<font color=\"red\">' || count_wrong || '</font></b>' as question, '<b>A: </b>' || answer || '<br><i><font color=\"blue\">' || image_path || '</font></i>' as answer FROM question WHERE 1=1 ";
         if(quizzId!=0){
             query += "and quizz_id = " + quizzId + " ";
         }
@@ -170,7 +172,7 @@ public class DBController {
 
     public static List<Question> findAllQuestions(Context context){
         List<Question> questions = new ArrayList<Question>();
-        String query = "SELECT id, nb, question, answer, count_right, count_wrong, datemod, quizz_id FROM question";
+        String query = "SELECT id, nb, question, answer, image_path, count_right, count_wrong, datemod, quizz_id FROM question";
 
         SQLiteDatabase db = SQLiteHelper.getInstance(context).getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -182,10 +184,11 @@ public class DBController {
                 question.setNb(cursor.getInt(1));
                 question.setQuestion(cursor.getString(2));
                 question.setAnswer(cursor.getString(3));
-                question.setCountRight(cursor.getInt(4));
-                question.setCountWrong(cursor.getInt(5));
-                question.setStringDatemod(cursor.getString(6));
-                question.setQuizzId(cursor.getInt(7));
+                question.setImagePath(cursor.getString(4));
+                question.setCountRight(cursor.getInt(5));
+                question.setCountWrong(cursor.getInt(6));
+                question.setStringDatemod(cursor.getString(7));
+                question.setQuizzId(cursor.getInt(8));
                 questions.add(question);
             }while(cursor.moveToNext());
         }
@@ -267,6 +270,7 @@ public class DBController {
         values.put("nb", question.getNb());
         values.put("question", question.getQuestion());
         values.put("answer", question.getAnswer());
+        values.put("image_path", question.getImagePath());
         values.put("quizz_id", question.getQuizzId());
         if(question.getDatemod()!=null) {
             values.put("datemod", question.getStringDatemod());
@@ -281,6 +285,7 @@ public class DBController {
         values.put("nb", question.getNb());
         values.put("question", question.getQuestion());
         values.put("answer", question.getAnswer());
+        values.put("image_path", question.getImagePath());
         values.put("count_right", question.getCountRight());
         values.put("count_wrong", question.getCountWrong());
         values.put("datemod", question.getStringDatemod());
@@ -316,6 +321,7 @@ public class DBController {
         values.put("nb", question.getNb());
         values.put("question", question.getQuestion());
         values.put("answer", question.getAnswer());
+        values.put("image_path", question.getImagePath());
         values.put("count_right", question.getCountRight());
         values.put("count_wrong", question.getCountWrong());
         values.put("datemod", question.getStringDatemod());

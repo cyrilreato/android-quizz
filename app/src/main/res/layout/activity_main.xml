@@ -39,13 +39,20 @@
         android:ems="10"
         android:padding="5dp" />
 
+    <ImageView
+        android:id="@+id/imgQuestion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/textQuestion" />
+
     <Button
         android:id="@+id/buttonShow"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/show"
         android:onClick="onClickShow"
-        android:layout_below="@+id/textQuestion"
+        android:layout_below="@+id/imgQuestion"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="5dp" />
