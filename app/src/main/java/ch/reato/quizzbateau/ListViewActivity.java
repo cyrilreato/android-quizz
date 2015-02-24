@@ -1,4 +1,4 @@
-package ch.ifage.quizz;
+package ch.reato.quizzbateau;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,7 +9,7 @@ import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.FilterQueryProvider;
 import android.widget.ListView;
-import ch.ifage.quizz.sqlite.DBController;
+import ch.reato.quizzbateau.sqlite.DBController;
 
 
 public class ListViewActivity extends Activity {
@@ -22,7 +22,7 @@ public class ListViewActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_view);
+        setContentView(ch.reato.quizzbateau.R.layout.activity_list_view);
 
         Intent i = getIntent();
         currentQuizzId = i.getIntExtra("currentQuizzId", 0);
@@ -32,7 +32,7 @@ public class ListViewActivity extends Activity {
         listActivity = this;
 
         // Filter
-        EditText filter = (EditText) this.findViewById(R.id.myFilter);
+        EditText filter = (EditText) this.findViewById(ch.reato.quizzbateau.R.id.myFilter);
         filter.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -65,12 +65,12 @@ public class ListViewActivity extends Activity {
                 "answer"
         };
         int[] to = new int[]{
-                R.id.question,
-                R.id.answer
+                ch.reato.quizzbateau.R.id.question,
+                ch.reato.quizzbateau.R.id.answer
         };
 
-        dataAdapter = new HtmlSimpleCursorAdapter(this, R.layout.list_view_item, cursor, columns, to, 0);
-        ListView listView = (ListView) findViewById(R.id.listView1);
+        dataAdapter = new HtmlSimpleCursorAdapter(this, ch.reato.quizzbateau.R.layout.list_view_item, cursor, columns, to, 0);
+        ListView listView = (ListView) findViewById(ch.reato.quizzbateau.R.id.listView1);
         listView.setAdapter(dataAdapter);
 
 

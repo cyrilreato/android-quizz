@@ -1,4 +1,4 @@
-package ch.ifage.quizz.network;
+package ch.reato.quizzbateau.network;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -17,8 +17,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.ifage.quizz.filesystem.FileHelper;
-import ch.ifage.quizz.model.Image;
+import ch.reato.quizzbateau.filesystem.FileHelper;
+import ch.reato.quizzbateau.model.Image;
 
 public class DownloadImages extends AsyncTask<String, Integer, List<Image>>{
 

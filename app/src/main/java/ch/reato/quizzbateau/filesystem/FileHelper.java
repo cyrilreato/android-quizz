@@ -1,8 +1,7 @@
-package ch.ifage.quizz.filesystem;
+package ch.reato.quizzbateau.filesystem;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -71,7 +70,6 @@ public final class FileHelper {
     }
 
     public void storeImage(String name, Bitmap bitmap) {
-
         try {
             FileOutputStream fos = context.openFileOutput(name, Context.MODE_PRIVATE);
             bitmap.compress(Bitmap.CompressFormat.PNG, 90, fos);

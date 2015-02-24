@@ -1,7 +1,7 @@
-package ch.ifage.quizz.network;
+package ch.reato.quizzbateau.network;
 
 import android.app.Activity;
-import ch.ifage.quizz.SyncActivity;
+import ch.reato.quizzbateau.SyncActivity;
 
 public class DownloadNewQuestions extends ADownloadWebpageTask implements IDownloadWebpage {
 
@@ -10,10 +10,7 @@ public class DownloadNewQuestions extends ADownloadWebpageTask implements IDownl
     public DownloadNewQuestions(Activity activity, String maxDate){
         super(activity);
         loadedBehavior = this;
-        urlToLoad = URL;
-        if(maxDate!=null && !maxDate.equals("")){
-            urlToLoad = urlToLoad + "?since=" + maxDate;
-        }
+        urlToLoad = NetworkHelper.forgeUrl(URL, maxDate, SyncActivity.BOAT_ONLY);
     }
 
     public void perform(String result) {

@@ -1,4 +1,4 @@
-package ch.ifage.quizz.sqlite;
+package ch.reato.quizzbateau.sqlite;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;

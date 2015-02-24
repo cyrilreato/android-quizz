@@ -1,4 +1,4 @@
-package ch.ifage.quizz.network;
+package ch.reato.quizzbateau.network;
 
 import java.io.BufferedReader;
 import java.io.IOException;

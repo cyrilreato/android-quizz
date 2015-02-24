@@ -1,16 +1,13 @@
-package ch.ifage.quizz.network;
+package ch.reato.quizzbateau.network;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import ch.ifage.quizz.SyncActivity;
-import ch.ifage.quizz.model.Question;
-import ch.ifage.quizz.model.Quizz;
-
+import ch.reato.quizzbateau.SyncActivity;
+import ch.reato.quizzbateau.model.Question;
+import ch.reato.quizzbateau.model.Quizz;
 import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -148,7 +145,6 @@ public class NetworkHelper {
         return newImages;
     }
 
-
     public static ArrayList<Integer> parseDeletedQuestionsJson(String downloadedString){
         ArrayList<Integer> deleted_questions = null;
 
@@ -213,4 +209,24 @@ public class NetworkHelper {
         return questions_counts;
     }
 
+    public static String forgeUrl(String url, String maxDate, boolean boatOnly) {
+        String params = null;
+        if(maxDate!=null && !maxDate.equals("")){
+            params = "since=" + maxDate;
+        }
+        if(boatOnly){
+            if(params != null) {
+                params = params + "&boatonly=1";
+            }else {
+                params = "boatonly=1";
+            }
+        }
+        if(params != null){
+            params = "?" + params;
+        }
+        if(params != null) {
+            url = url + params;
+        }
+        return url;
+    }
 }

@@ -7,14 +7,14 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="ch.ifage.quizz.MainActivity">
+    tools:context="ch.reato.quizzbateau.MainActivity">
 
     <TextView
         android:id="@+id/labelQuestion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20dp"
-        android:textAllCaps="true"
+        android:textAllCaps="false"
         android:textStyle="bold"
         android:text="@string/question" />
 
@@ -26,25 +26,38 @@
         android:layout_alignParentRight="true"
         android:layout_alignBottom="@id/labelQuestion" />
 
-    <TextView
-        android:id="@+id/textQuestion"
-        android:layout_width="wrap_content"
+    <ScrollView
+        android:id="@+id/scrollQuestion"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/labelQuestion"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/labelQuestion"
+        android:layout_below="@+id/labelQuestion">
+
+    <TextView
+        android:id="@+id/textQuestion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:minLines="6"
+        android:textSize="18dp"
         android:singleLine="false"
         android:background="@drawable/back"
         android:ems="10"
         android:padding="5dp" />
 
+    </ScrollView>
+
     <ImageView
         android:id="@+id/imgQuestion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:minWidth="800px"
+        android:maxWidth="800px"
+        android:minHeight="500px"
+        android:maxHeight="500px"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/textQuestion" />
+        android:layout_below="@+id/scrollQuestion" />
 
     <Button
         android:id="@+id/buttonShow"
@@ -62,7 +75,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20dp"
-        android:textAllCaps="true"
+        android:textAllCaps="false"
         android:textStyle="bold"
         android:text="@string/answer"
         android:layout_below="@+id/buttonShow"
@@ -71,7 +84,7 @@
     <ScrollView
         android:id="@+id/scrollAnswer"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/labelAnswer"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/labelAnswer">
@@ -81,6 +94,7 @@
         android:layout_height="wrap_content"
         android:minLines="8"
         android:singleLine="false"
+        android:textSize="18dp"
         android:background="@drawable/back"
         android:ems="10"
         android:padding="5dp" />

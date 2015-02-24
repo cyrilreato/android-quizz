@@ -1,4 +1,4 @@
-package ch.ifage.quizz.model;
+package ch.reato.quizzbateau.model;
 
 import java.text.DateFormat;
 import java.text.ParseException;

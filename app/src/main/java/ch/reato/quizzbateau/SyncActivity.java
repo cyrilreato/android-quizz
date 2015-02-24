@@ -1,8 +1,8 @@
-package ch.ifage.quizz;
+package ch.reato.quizzbateau;
 
-import ch.ifage.quizz.model.Quizz;
-import ch.ifage.quizz.sqlite.DBController;
-import ch.ifage.quizz.network.NetworkHelper;
+import ch.reato.quizzbateau.model.Quizz;
+import ch.reato.quizzbateau.sqlite.DBController;
+import ch.reato.quizzbateau.network.NetworkHelper;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,21 +15,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import ch.ifage.quizz.model.Question;
+import ch.reato.quizzbateau.model.Question;
 
 
 public class SyncActivity extends Activity {
 
+    // TODO Integrate BOAT_ONLY as parameter for app
+    public final static boolean BOAT_ONLY = true;
     private Button syncButton;
     private ProgressBar spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sync);
+        setContentView(ch.reato.quizzbateau.R.layout.activity_sync);
 
-        syncButton = (Button)findViewById(R.id.buttonSync);
-        spinner = (ProgressBar)findViewById(R.id.progressBar1);
+        syncButton = (Button)findViewById(ch.reato.quizzbateau.R.id.buttonSync);
+        spinner = (ProgressBar)findViewById(ch.reato.quizzbateau.R.id.progressBar1);
 
         showSpinner();
         disableSyncButton();
@@ -58,9 +60,10 @@ public class SyncActivity extends Activity {
     }
 
     public void onLoadedQuestionsCount(String result) {
+
         HashMap<String, Integer> questions_counts = NetworkHelper.parseQuestionsCountJson(result);
 
-        TextView htmlTextView = (TextView)findViewById(R.id.labelSyncStatus);
+        TextView htmlTextView = (TextView)findViewById(ch.reato.quizzbateau.R.id.labelSyncStatus);
         String text = "Quizz à synchroniser: " + questions_counts.get("quizz_new_count") + "<br>" + "Quizz à effacer: " + questions_counts.get("quizz_deleted_count") + "<br>";
         text = text + "Questions à synchroniser: " + questions_counts.get("questions_new_count") + "<br>" + "Questions à effacer: " + questions_counts.get("questions_deleted_count") + "<br>";
         htmlTextView.setText(Html.fromHtml(text));
@@ -123,7 +126,7 @@ public class SyncActivity extends Activity {
 
         DBController.updateLastSyncDate(this);
 
-        TextView htmlTextView = (TextView)findViewById(R.id.labelSyncStatus);
+        TextView htmlTextView = (TextView)findViewById(ch.reato.quizzbateau.R.id.labelSyncStatus);
         htmlTextView.setText(Html.fromHtml("<b>Synchronization réussie !</b>"));
 
         hideSpinner();

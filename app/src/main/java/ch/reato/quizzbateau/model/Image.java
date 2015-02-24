@@ -1,4 +1,4 @@
-package ch.ifage.quizz.model;
+package ch.reato.quizzbateau.model;
 
 import android.graphics.Bitmap;
 

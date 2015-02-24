@@ -1,4 +1,4 @@
-package ch.ifage.quizz;
+package ch.reato.quizzbateau;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,15 +6,14 @@ import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.List;
 
-import ch.ifage.quizz.model.Quizz;
-import ch.ifage.quizz.sqlite.DBController;
+import ch.reato.quizzbateau.model.Quizz;
+import ch.reato.quizzbateau.sqlite.DBController;
 
 public class QuizzActivity extends Activity {
 
@@ -33,7 +32,7 @@ public class QuizzActivity extends Activity {
         txtCurrentQuizz = (TextView)findViewById(R.id.labelCurrentQuizz);
 
         spinner = (Spinner)findViewById(R.id.quizz_spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, quizzes);
+        ArrayAdapter<String> adapter = new ArrayAdapter(this, R.layout.layout_spinner, quizzes);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 

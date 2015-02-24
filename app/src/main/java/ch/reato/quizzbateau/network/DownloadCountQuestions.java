@@ -1,20 +1,15 @@
-package ch.ifage.quizz.network;
+package ch.reato.quizzbateau.network;
 
-import android.app.Activity;
-
-import ch.ifage.quizz.SyncActivity;
+import ch.reato.quizzbateau.SyncActivity;
 
 public class DownloadCountQuestions extends ADownloadWebpageTask implements IDownloadWebpage {
 
     String URL = "http://www.reato.ch/quizz/json_quizz_count.php";
 
-    public DownloadCountQuestions(Activity activity, String maxDate){
+    public DownloadCountQuestions(SyncActivity activity, String maxDate){
         super(activity);
         loadedBehavior = this;
-        urlToLoad = URL;
-        if(maxDate!=null && !maxDate.equals("")){
-            urlToLoad = urlToLoad + "?since=" + maxDate;
-        }
+        urlToLoad = NetworkHelper.forgeUrl(URL, maxDate, SyncActivity.BOAT_ONLY);
     }
 
     public void perform(String result) {

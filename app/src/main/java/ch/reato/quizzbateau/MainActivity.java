@@ -1,4 +1,4 @@
-package ch.ifage.quizz;
+package ch.reato.quizzbateau;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -6,9 +6,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import ch.ifage.quizz.filesystem.FileHelper;
-import ch.ifage.quizz.model.Question;
-import ch.ifage.quizz.sqlite.DBController;
+import ch.reato.quizzbateau.filesystem.FileHelper;
+import ch.reato.quizzbateau.model.Question;
+import ch.reato.quizzbateau.sqlite.DBController;
 import android.app.Activity;
 import android.content.Intent;
 import android.text.Html;
@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
-import java.util.regex.Pattern;
 
 public class MainActivity extends Activity {
 
@@ -30,7 +29,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(ch.reato.quizzbateau.R.layout.activity_main);
         toggleAnswerVisibility();
 
         //System.out.println("-------------------- Starting app");
@@ -67,32 +66,32 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(ch.reato.quizzbateau.R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(id == R.id.quizz_settings) {
+        if(id == ch.reato.quizzbateau.R.id.quizz_settings) {
             Intent i = new Intent(this, QuizzActivity.class);
             i.putExtra("currentQuizzId", currentQuizzId);
             startActivityForResult(i, 1);
-        }else if(id == R.id.view_settings){
+        }else if(id == ch.reato.quizzbateau.R.id.view_settings){
             Intent i = new Intent(this, ListViewActivity.class);
             i.putExtra("currentQuizzId", currentQuizzId);
             startActivity(i);
-        }else if(id == R.id.sync_settings){
+        }else if(id == ch.reato.quizzbateau.R.id.sync_settings){
             Intent i = new Intent(this, SyncActivity.class);
             startActivityForResult(i, 2);
-        }else if(id == R.id.deleteall_settings){
+        }else if(id == ch.reato.quizzbateau.R.id.deleteall_settings){
             DBController.deleteAllQuestions(this);
             DBController.deleteAllQuizz(this);
             FileHelper fileHelper = FileHelper.getInstance(this);
             fileHelper.deleteAllLocalImages();
             DBController.resetLastSyncDate(this);
             populateUiWithNoQuestion();
-        }else if(id == R.id.resetcounters_settings){
+        }else if(id == ch.reato.quizzbateau.R.id.resetcounters_settings){
             DBController.resetAllCounters(this, currentQuizzId);
             currentQuestion.setCountRight(0);
             currentQuestion.setCountWrong(0);
@@ -169,36 +168,36 @@ public class MainActivity extends Activity {
     }
 
     private void populateUiWithCurrentQuestion() {
-        TextView htmlTextView = (TextView)findViewById(R.id.textQuestion);
+        TextView htmlTextView = (TextView)findViewById(ch.reato.quizzbateau.R.id.textQuestion);
         htmlTextView.setText(Html.fromHtml(currentQuestion.getQuestion()));
 
-        TextView htmlAnswer = (TextView)findViewById(R.id.textAnswer);
+        TextView htmlAnswer = (TextView)findViewById(ch.reato.quizzbateau.R.id.textAnswer);
         htmlAnswer.setText(Html.fromHtml(currentQuestion.getAnswer()));
 
         populateUiWithCurrentImage();
         populateUiWithCurrentCounters();
 
-        Button buttonShow = (Button)findViewById(R.id.buttonShow);
+        Button buttonShow = (Button)findViewById(ch.reato.quizzbateau.R.id.buttonShow);
         buttonShow.setEnabled(true);
 
     }
 
     private void populateUiWithNoQuestion(){
-        TextView htmlTextView = (TextView)findViewById(R.id.textQuestion);
+        TextView htmlTextView = (TextView)findViewById(ch.reato.quizzbateau.R.id.textQuestion);
         htmlTextView.setText(Html.fromHtml("No question"));
 
-        TextView htmlAnswer = (TextView)findViewById(R.id.textAnswer);
+        TextView htmlAnswer = (TextView)findViewById(ch.reato.quizzbateau.R.id.textAnswer);
         htmlAnswer.setText("");
 
-        TextView htmlStatsTextView = (TextView)findViewById(R.id.labelStats);
+        TextView htmlStatsTextView = (TextView)findViewById(ch.reato.quizzbateau.R.id.labelStats);
         htmlStatsTextView.setText("");
 
-        Button buttonShow = (Button)findViewById(R.id.buttonShow);
+        Button buttonShow = (Button)findViewById(ch.reato.quizzbateau.R.id.buttonShow);
         buttonShow.setEnabled(false);
     }
 
     private void populateUiWithCurrentCounters() {
-        TextView htmlStatsTextView = (TextView)findViewById(R.id.labelStats);
+        TextView htmlStatsTextView = (TextView)findViewById(ch.reato.quizzbateau.R.id.labelStats);
         String text = "<b><font color='#008000'>" + currentQuestion.getCountRight() + "</font> / <font color='red'>" + currentQuestion.getCountWrong() + "</font></b>";
         htmlStatsTextView.setText(Html.fromHtml(text)); // , TextView.BufferType.SPANNABLE
     }
@@ -206,15 +205,18 @@ public class MainActivity extends Activity {
     private void populateUiWithCurrentImage(){
 
         ImageView myImage = (ImageView) findViewById(R.id.imgQuestion);
-        TextView htmlTextView = (TextView)findViewById(R.id.textQuestion);
+        TextView htmlQuestion = (TextView)findViewById(R.id.textQuestion);
+        TextView htmlAnswer = (TextView)findViewById(R.id.textAnswer);
         if(currentQuestion.getImagePath().isEmpty()){
             myImage.setVisibility(View.GONE);
-            htmlTextView.setMinLines(6);
+            htmlQuestion.setMinLines(6);
+            htmlAnswer.setMinLines(6);
             myImage.setImageResource(0);
             return;
         }else{
             myImage.setVisibility(View.VISIBLE);
-            htmlTextView.setMinLines(2);
+            htmlQuestion.setMinLines(2);
+            htmlAnswer.setMinLines(2);
             File imgFile = new File(getFilesDir() + "/" + currentQuestion.getImagePath());
             if (imgFile.exists()) {
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
@@ -224,10 +226,10 @@ public class MainActivity extends Activity {
     }
 
     private void toggleAnswerVisibility() {
-        TextView labelAnswer = (TextView)findViewById(R.id.labelAnswer);
-        TextView textAnswer = (TextView)findViewById(R.id.textAnswer);
-        Button buttonRight = (Button)findViewById(R.id.buttonRight);
-        Button buttonWrong = (Button)findViewById(R.id.buttonWrong);
+        TextView labelAnswer = (TextView)findViewById(ch.reato.quizzbateau.R.id.labelAnswer);
+        TextView textAnswer = (TextView)findViewById(ch.reato.quizzbateau.R.id.textAnswer);
+        Button buttonRight = (Button)findViewById(ch.reato.quizzbateau.R.id.buttonRight);
+        Button buttonWrong = (Button)findViewById(ch.reato.quizzbateau.R.id.buttonWrong);
 
         if(show==true){
             labelAnswer.setVisibility(View.INVISIBLE);

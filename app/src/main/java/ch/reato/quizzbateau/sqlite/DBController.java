@@ -1,4 +1,4 @@
-package ch.ifage.quizz.sqlite;
+package ch.reato.quizzbateau.sqlite;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -9,11 +9,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 
-import ch.ifage.quizz.model.Question;
-import ch.ifage.quizz.model.Quizz;
+import ch.reato.quizzbateau.model.Question;
+import ch.reato.quizzbateau.model.Quizz;
 
 public class DBController {
 

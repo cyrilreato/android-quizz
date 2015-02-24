@@ -1,4 +1,4 @@
-package ch.ifage.quizz;
+package ch.reato.quizzbateau;
 
 import android.content.Context;
 import android.database.Cursor;

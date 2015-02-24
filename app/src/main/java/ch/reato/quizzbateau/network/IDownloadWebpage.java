@@ -1,4 +1,4 @@
-package ch.ifage.quizz.network;
+package ch.reato.quizzbateau.network;
 
 /**
  * Created by ex200137 on 19.01.2015.
