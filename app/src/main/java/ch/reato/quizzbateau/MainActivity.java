@@ -18,11 +18,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
+import java.util.Map;
 
 public class MainActivity extends Activity {
 
     private Question currentQuestion;
     private int currentQuizzId;
+    private Map<String, Integer> mapCounters;
     private boolean show = true;
     private int qCount;
 
@@ -37,6 +39,9 @@ public class MainActivity extends Activity {
         // Get last quizz ID
         currentQuizzId = DBController.findLastQuizzId(this);
 
+        // Get quizz right/wrong counters
+        mapCounters = DBController.findQuizzCounters(this, currentQuizzId);
+
         // Get questions count
         qCount = DBController.findQuestionsCount(this, currentQuizzId);
 
@@ -45,22 +50,6 @@ public class MainActivity extends Activity {
         if(success){
             populateUiWithCurrentQuestion();
         }
-
-
-        // -------------------------------------------------------------------
-        // Load image part
-
-        //String url = "http://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Drymoreomys_albimaculatus_002.jpg/150px-Drymoreomys_albimaculatus_002.jpg";
-        //DownloadImages mDownloader = new DownloadImages(MainActivity.this, url, new DownloadImages.ImageLoaderListener() {
-        //    @Override
-        //    public void onImageDownloaded(Bitmap bmp) {
-        //        System.out.println("Image loaded :)");
-        //        System.out.println(bmp.getByteCount());
-        //        ImageView imgQuestion = (ImageView)findViewById(R.id.imgQuestion);
-        //        imgQuestion.setImageBitmap(bmp);
-        //    }
-        //});
-        //mDownloader.execute();
 
     }
 
@@ -73,28 +62,30 @@ public class MainActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(id == ch.reato.quizzbateau.R.id.quizz_settings) {
+        if(id == R.id.quizz_settings) {
             Intent i = new Intent(this, QuizzActivity.class);
             i.putExtra("currentQuizzId", currentQuizzId);
             startActivityForResult(i, 1);
-        }else if(id == ch.reato.quizzbateau.R.id.view_settings){
+        }else if(id == R.id.view_settings){
             Intent i = new Intent(this, ListViewActivity.class);
             i.putExtra("currentQuizzId", currentQuizzId);
             startActivity(i);
-        }else if(id == ch.reato.quizzbateau.R.id.sync_settings){
+        }else if(id == R.id.sync_settings){
             Intent i = new Intent(this, SyncActivity.class);
             startActivityForResult(i, 2);
-        }else if(id == ch.reato.quizzbateau.R.id.deleteall_settings){
+        }else if(id == R.id.deleteall_settings){
             DBController.deleteAllQuestions(this);
             DBController.deleteAllQuizz(this);
             FileHelper fileHelper = FileHelper.getInstance(this);
             fileHelper.deleteAllLocalImages();
             DBController.resetLastSyncDate(this);
             populateUiWithNoQuestion();
-        }else if(id == ch.reato.quizzbateau.R.id.resetcounters_settings){
+        }else if(id == R.id.resetcounters_settings){
             DBController.resetAllCounters(this, currentQuizzId);
             currentQuestion.setCountRight(0);
             currentQuestion.setCountWrong(0);
+            mapCounters.put("right", 0);
+            mapCounters.put("wrong", 0);
             populateUiWithCurrentCounters();
         }
 
@@ -111,6 +102,9 @@ public class MainActivity extends Activity {
         currentQuestion.incrementCountRight();
         DBController.updateQuestionFromId(this, currentQuestion);
 
+        // Get quizz right/wrong counters
+        mapCounters = DBController.findQuizzCounters(this, currentQuizzId);
+
         // Load new question
         loadAndDisplayNewQuestion();
     }
@@ -120,6 +114,9 @@ public class MainActivity extends Activity {
         // Handle current question
         currentQuestion.incrementCountWrong();
         DBController.updateQuestionFromId(this, currentQuestion);
+
+        // Get quizz right/wrong counters
+        mapCounters = DBController.findQuizzCounters(this, currentQuizzId);
 
         // Load new question
         loadAndDisplayNewQuestion();
@@ -197,9 +194,11 @@ public class MainActivity extends Activity {
     }
 
     private void populateUiWithCurrentCounters() {
+        // TODO implement total counters + question counters
         TextView htmlStatsTextView = (TextView)findViewById(ch.reato.quizzbateau.R.id.labelStats);
-        String text = "<b><font color='#008000'>" + currentQuestion.getCountRight() + "</font> / <font color='red'>" + currentQuestion.getCountWrong() + "</font></b>";
-        htmlStatsTextView.setText(Html.fromHtml(text)); // , TextView.BufferType.SPANNABLE
+        String text = "<i>Juste-Faux question/quizz: <b><font color='#008000'>" + currentQuestion.getCountRight() + "</font>-<font color='red'>" + currentQuestion.getCountWrong() + "</font>";
+        text = text + "/<font color='#008000'>" + mapCounters.get("right") + "</font>-<font color='red'>" + mapCounters.get("wrong") + "</font></b></i>";
+        htmlStatsTextView.setText(Html.fromHtml(text));
     }
 
     private void populateUiWithCurrentImage(){
@@ -244,7 +243,6 @@ public class MainActivity extends Activity {
         }
         show = !show;
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){

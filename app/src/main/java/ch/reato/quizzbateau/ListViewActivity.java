@@ -9,12 +9,13 @@ import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.FilterQueryProvider;
 import android.widget.ListView;
+
 import ch.reato.quizzbateau.sqlite.DBController;
 
 
 public class ListViewActivity extends Activity {
 
-    private HtmlSimpleCursorAdapter dataAdapter;
+    private ListViewItemCursorAdapter dataAdapter;
     private Cursor cursor;
     private int currentQuizzId;
     private Activity listActivity;
@@ -62,15 +63,18 @@ public class ListViewActivity extends Activity {
         cursor = DBController.fetchAllQuestionsForList(this, currentQuizzId, constraint);
         String[] columns = new String[]{
                 "question",
-                "answer"
+                "answer",
+                "image_path"
         };
         int[] to = new int[]{
-                ch.reato.quizzbateau.R.id.question,
-                ch.reato.quizzbateau.R.id.answer
+                R.id.question,
+                R.id.answer,
+                R.id.imgQuestionList
         };
 
-        dataAdapter = new HtmlSimpleCursorAdapter(this, ch.reato.quizzbateau.R.layout.list_view_item, cursor, columns, to, 0);
-        ListView listView = (ListView) findViewById(ch.reato.quizzbateau.R.id.listView1);
+        dataAdapter = new ListViewItemCursorAdapter(this, R.layout.list_view_item, cursor, columns, to, 0);
+
+        ListView listView = (ListView) findViewById(R.id.listView1);
         listView.setAdapter(dataAdapter);
 
 

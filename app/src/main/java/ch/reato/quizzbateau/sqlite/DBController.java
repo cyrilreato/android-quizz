@@ -9,7 +9,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ch.reato.quizzbateau.model.Question;
 import ch.reato.quizzbateau.model.Quizz;
@@ -151,9 +153,26 @@ public class DBController {
         return question;
     }
 
+    public static Map<String, Integer> findQuizzCounters(Context context, int quizzId){
+        SQLiteDatabase db = SQLiteHelper.getInstance(context).getReadableDatabase();
+        String query = "SELECT sum(count_right), sum(count_wrong) FROM question ";
+        if(quizzId!=0){
+            query += "WHERE quizz_id = " + quizzId + " ";
+        }
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor!=null){
+            cursor.moveToFirst();
+        }
+        HashMap<String, Integer> counters = new HashMap<String, Integer>();
+        counters.put("right", cursor.getInt(0));
+        counters.put("wrong", cursor.getInt(1));
+
+        return counters;
+    }
+
     public static Cursor fetchAllQuestionsForList(Context context, int quizzId, String constraint){
 
-        String query = "SELECT id as _id, nb, '<b>Q' || nb || ': ' || question || ' <font color=\"#008000\">' || count_right || '</font>/<font color=\"red\">' || count_wrong || '</font></b>' as question, '<b>A: </b>' || answer || '<br><i><font color=\"blue\">' || image_path || '</font></i>' as answer FROM question WHERE 1=1 ";
+        String query = "SELECT id as _id, nb, '<b>Q' || nb || ': ' || question || ' <font color=\"#008000\">' || count_right || '</font>/<font color=\"red\">' || count_wrong || '</font></b>' as question, '<b>A: </b>' || answer as answer, image_path FROM question WHERE 1=1 ";
         if(quizzId!=0){
             query += "and quizz_id = " + quizzId + " ";
         }
