@@ -17,10 +17,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.reato.quizzbateau.SyncActivity;
 import ch.reato.quizzbateau.filesystem.FileHelper;
 import ch.reato.quizzbateau.model.Image;
 
-public class DownloadImages extends AsyncTask<String, Integer, List<Image>>{
+public class DownloadImages extends AsyncTask<String, Integer, List<Image>> {
 
     final static String URL_PREFIX = "http://www.reato.ch/quizz/images/";
     private ProgressBar pb;
@@ -34,13 +35,10 @@ public class DownloadImages extends AsyncTask<String, Integer, List<Image>>{
     private int progress;
     List<Image> bitmaps;
 
-    public DownloadImages(Context context){ // , String url, ImageLoaderListener listener
+    public DownloadImages(Context context){
         this.context = context;
     }
 
-    //public interface ImageLoaderListener {
-    //    void onImageDownloaded(Bitmap bmp);
-    //}
 
     @Override
     protected void onPreExecute() {
@@ -81,6 +79,7 @@ public class DownloadImages extends AsyncTask<String, Integer, List<Image>>{
         //percent.setText(values[0] + "%");
 
         super.onProgressUpdate(values);
+
     }
 
     @Override
@@ -97,6 +96,8 @@ public class DownloadImages extends AsyncTask<String, Integer, List<Image>>{
         //Toast.makeText(c, "download complete", Toast.LENGTH_SHORT).show();
 
         super.onPostExecute(result);
+
+        ((SyncActivity) context).onLoadedImages(result);
     }
 
     public static Bitmap getBitmapFromURL(String link) {

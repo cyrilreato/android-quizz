@@ -31,7 +31,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(ch.reato.quizzbateau.R.layout.activity_main);
+        setContentView(R.layout.activity_main);
         toggleAnswerVisibility();
 
         //System.out.println("-------------------- Starting app");
@@ -55,7 +55,7 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(ch.reato.quizzbateau.R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -74,6 +74,7 @@ public class MainActivity extends Activity {
             Intent i = new Intent(this, SyncActivity.class);
             startActivityForResult(i, 2);
         }else if(id == R.id.deleteall_settings){
+            // TODO Hide image
             DBController.deleteAllQuestions(this);
             DBController.deleteAllQuizz(this);
             FileHelper fileHelper = FileHelper.getInstance(this);
@@ -165,37 +166,36 @@ public class MainActivity extends Activity {
     }
 
     private void populateUiWithCurrentQuestion() {
-        TextView htmlTextView = (TextView)findViewById(ch.reato.quizzbateau.R.id.textQuestion);
+        TextView htmlTextView = (TextView)findViewById(R.id.textQuestion);
         htmlTextView.setText(Html.fromHtml(currentQuestion.getQuestion()));
 
-        TextView htmlAnswer = (TextView)findViewById(ch.reato.quizzbateau.R.id.textAnswer);
+        TextView htmlAnswer = (TextView)findViewById(R.id.textAnswer);
         htmlAnswer.setText(Html.fromHtml(currentQuestion.getAnswer()));
 
         populateUiWithCurrentImage();
         populateUiWithCurrentCounters();
 
-        Button buttonShow = (Button)findViewById(ch.reato.quizzbateau.R.id.buttonShow);
+        Button buttonShow = (Button)findViewById(R.id.buttonShow);
         buttonShow.setEnabled(true);
 
     }
 
     private void populateUiWithNoQuestion(){
-        TextView htmlTextView = (TextView)findViewById(ch.reato.quizzbateau.R.id.textQuestion);
+        TextView htmlTextView = (TextView)findViewById(R.id.textQuestion);
         htmlTextView.setText(Html.fromHtml("No question"));
 
-        TextView htmlAnswer = (TextView)findViewById(ch.reato.quizzbateau.R.id.textAnswer);
+        TextView htmlAnswer = (TextView)findViewById(R.id.textAnswer);
         htmlAnswer.setText("");
 
-        TextView htmlStatsTextView = (TextView)findViewById(ch.reato.quizzbateau.R.id.labelStats);
+        TextView htmlStatsTextView = (TextView)findViewById(R.id.labelStats);
         htmlStatsTextView.setText("");
 
-        Button buttonShow = (Button)findViewById(ch.reato.quizzbateau.R.id.buttonShow);
+        Button buttonShow = (Button)findViewById(R.id.buttonShow);
         buttonShow.setEnabled(false);
     }
 
     private void populateUiWithCurrentCounters() {
-        // TODO implement total counters + question counters
-        TextView htmlStatsTextView = (TextView)findViewById(ch.reato.quizzbateau.R.id.labelStats);
+        TextView htmlStatsTextView = (TextView)findViewById(R.id.labelStats);
         String text = "<i>Juste-Faux question/quizz: <b><font color='#008000'>" + currentQuestion.getCountRight() + "</font>-<font color='red'>" + currentQuestion.getCountWrong() + "</font>";
         text = text + "/<font color='#008000'>" + mapCounters.get("right") + "</font>-<font color='red'>" + mapCounters.get("wrong") + "</font></b></i>";
         htmlStatsTextView.setText(Html.fromHtml(text));

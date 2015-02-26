@@ -26,7 +26,7 @@ public class NetworkHelper {
         return false;
     }
 
-    public static void doSync(SyncActivity syncActivity, String maxDate) {
+    public static void doQuizzAndImagesSync(SyncActivity syncActivity, String maxDate) {
         if(isNetworkAvailable(syncActivity)){
             new DownloadNewQuestions(syncActivity, maxDate).execute();
         } else {

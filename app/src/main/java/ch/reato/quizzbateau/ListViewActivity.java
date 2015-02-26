@@ -12,7 +12,6 @@ import android.widget.ListView;
 
 import ch.reato.quizzbateau.sqlite.DBController;
 
-
 public class ListViewActivity extends Activity {
 
     private ListViewItemCursorAdapter dataAdapter;
@@ -23,7 +22,7 @@ public class ListViewActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(ch.reato.quizzbateau.R.layout.activity_list_view);
+        setContentView(R.layout.activity_list_view);
 
         Intent i = getIntent();
         currentQuizzId = i.getIntExtra("currentQuizzId", 0);
@@ -33,7 +32,7 @@ public class ListViewActivity extends Activity {
         listActivity = this;
 
         // Filter
-        EditText filter = (EditText) this.findViewById(ch.reato.quizzbateau.R.id.myFilter);
+        EditText filter = (EditText) this.findViewById(R.id.myFilter);
         filter.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

@@ -1,5 +1,6 @@
 package ch.reato.quizzbateau;
 
+import ch.reato.quizzbateau.model.Image;
 import ch.reato.quizzbateau.model.Quizz;
 import ch.reato.quizzbateau.sqlite.DBController;
 import ch.reato.quizzbateau.network.NetworkHelper;
@@ -17,10 +18,8 @@ import java.util.List;
 
 import ch.reato.quizzbateau.model.Question;
 
-
 public class SyncActivity extends Activity {
 
-    // TODO Integrate BOAT_ONLY as parameter for app
     public final static boolean BOAT_ONLY = true;
     private Button syncButton;
     private ProgressBar spinner;
@@ -28,17 +27,16 @@ public class SyncActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(ch.reato.quizzbateau.R.layout.activity_sync);
+        setContentView(R.layout.activity_sync);
 
-        syncButton = (Button)findViewById(ch.reato.quizzbateau.R.id.buttonSync);
-        spinner = (ProgressBar)findViewById(ch.reato.quizzbateau.R.id.progressBar1);
+        syncButton = (Button)findViewById(R.id.buttonSync);
+        spinner = (ProgressBar)findViewById(R.id.progressBar1);
 
         showSpinner();
         disableSyncButton();
         String maxDate = findLocalLastSyncDate();
 
         syncQuestionsCount(maxDate);
-
     }
 
     public void onClickSynchronize(View view) {
@@ -55,8 +53,7 @@ public class SyncActivity extends Activity {
 
     private void syncQuestions(String maxDate){
         maxDate = maxDate.replaceAll("[^0-9]","");
-        NetworkHelper.doSync(this, maxDate);
-        // Sync images !
+        NetworkHelper.doQuizzAndImagesSync(this, maxDate);
     }
 
     public void onLoadedQuestionsCount(String result) {
@@ -74,8 +71,17 @@ public class SyncActivity extends Activity {
         }
     }
 
-    public void onLoadedNewQuestions(String result){
+    public void onLoadedImages(List<Image> result){
+        TextView htmlTextView = (TextView)findViewById(R.id.labelSyncStatus);
+        htmlTextView.setText(Html.fromHtml("<b>Synchronization réussie !</b>"));
 
+        hideSpinner();
+
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("syncDone", 1);
+        setResult(RESULT_OK, returnIntent);
+    }
+    public void onLoadedNewQuestions(String result){
         // Deleted questions
         ArrayList<Integer> deleted_questions = NetworkHelper.parseDeletedQuestionsJson(result);
         if(deleted_questions != null) {
@@ -120,20 +126,12 @@ public class SyncActivity extends Activity {
             }
         }
 
-        // Load images
-        ArrayList<String> newImages = NetworkHelper.parseNewImagesJson(result);
-        NetworkHelper.doSyncImages(this, newImages);
 
         DBController.updateLastSyncDate(this);
 
-        TextView htmlTextView = (TextView)findViewById(ch.reato.quizzbateau.R.id.labelSyncStatus);
-        htmlTextView.setText(Html.fromHtml("<b>Synchronization réussie !</b>"));
-
-        hideSpinner();
-
-        Intent returnIntent = new Intent();
-        returnIntent.putExtra("syncDone", 1);
-        setResult(RESULT_OK, returnIntent);
+        // Load images
+        ArrayList<String> newImages = NetworkHelper.parseNewImagesJson(result);
+        NetworkHelper.doSyncImages(this, newImages);
 
     }
 
