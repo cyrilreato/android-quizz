@@ -18,6 +18,10 @@ import ch.reato.quizzbateau.model.Quizz;
 
 public class DBController {
 
+    public static int findQuestionsCount(Context context){
+        return findQuestionsCount(context, 0);
+    }
+
     public static int findQuestionsCount(Context context, int quizzId){
         int questionsCount;
         String query;

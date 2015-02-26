@@ -49,6 +49,8 @@ public class MainActivity extends Activity {
         boolean success = loadRandomQuestion();
         if(success){
             populateUiWithCurrentQuestion();
+        }else{
+            populateUiWithNoQuestion();
         }
 
     }
@@ -74,7 +76,6 @@ public class MainActivity extends Activity {
             Intent i = new Intent(this, SyncActivity.class);
             startActivityForResult(i, 2);
         }else if(id == R.id.deleteall_settings){
-            // TODO Hide image
             DBController.deleteAllQuestions(this);
             DBController.deleteAllQuizz(this);
             FileHelper fileHelper = FileHelper.getInstance(this);
@@ -182,7 +183,9 @@ public class MainActivity extends Activity {
 
     private void populateUiWithNoQuestion(){
         TextView htmlTextView = (TextView)findViewById(R.id.textQuestion);
-        htmlTextView.setText(Html.fromHtml("No question"));
+        htmlTextView.setText(Html.fromHtml("<i><font color='grey'>" + getString(R.string.no_question_text) + "</font></i>"));
+
+        populateUiWithNoImage();
 
         TextView htmlAnswer = (TextView)findViewById(R.id.textAnswer);
         htmlAnswer.setText("");
@@ -196,8 +199,8 @@ public class MainActivity extends Activity {
 
     private void populateUiWithCurrentCounters() {
         TextView htmlStatsTextView = (TextView)findViewById(R.id.labelStats);
-        String text = "<i>Juste-Faux question/quizz: <b><font color='#008000'>" + currentQuestion.getCountRight() + "</font>-<font color='red'>" + currentQuestion.getCountWrong() + "</font>";
-        text = text + "/<font color='#008000'>" + mapCounters.get("right") + "</font>-<font color='red'>" + mapCounters.get("wrong") + "</font></b></i>";
+        String text = "<i>Score total: <b><font color='#008000'>" + mapCounters.get("right") + "</font>/<font color='red'>" + mapCounters.get("wrong") + "</font></b>";
+        text = text + "<font color='black'>, question: </font><b><font color='#008000'>" + currentQuestion.getCountRight() + "</font>/<font color='red'>" + currentQuestion.getCountWrong() + "</font></b></i>";
         htmlStatsTextView.setText(Html.fromHtml(text));
     }
 
@@ -207,11 +210,7 @@ public class MainActivity extends Activity {
         TextView htmlQuestion = (TextView)findViewById(R.id.textQuestion);
         TextView htmlAnswer = (TextView)findViewById(R.id.textAnswer);
         if(currentQuestion.getImagePath().isEmpty()){
-            myImage.setVisibility(View.GONE);
-            htmlQuestion.setMinLines(6);
-            htmlAnswer.setMinLines(6);
-            myImage.setImageResource(0);
-            return;
+            populateUiWithNoImage();
         }else{
             myImage.setVisibility(View.VISIBLE);
             htmlQuestion.setMinLines(2);
@@ -222,6 +221,17 @@ public class MainActivity extends Activity {
                 myImage.setImageBitmap(myBitmap);
             }
         }
+    }
+
+    private void populateUiWithNoImage(){
+        ImageView myImage = (ImageView) findViewById(R.id.imgQuestion);
+        TextView htmlQuestion = (TextView)findViewById(R.id.textQuestion);
+        TextView htmlAnswer = (TextView)findViewById(R.id.textAnswer);
+
+        myImage.setVisibility(View.GONE);
+        htmlQuestion.setMinLines(6);
+        htmlAnswer.setMinLines(6);
+        myImage.setImageResource(0);
     }
 
     private void toggleAnswerVisibility() {

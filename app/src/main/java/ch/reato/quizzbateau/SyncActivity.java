@@ -54,6 +54,10 @@ public class SyncActivity extends Activity {
     private void syncQuestions(String maxDate){
         maxDate = maxDate.replaceAll("[^0-9]","");
         NetworkHelper.doQuizzAndImagesSync(this, maxDate);
+
+        TextView htmlTextView = (TextView)findViewById(R.id.labelSyncStatus);
+        htmlTextView.setText(Html.fromHtml("<b>" + getString(R.string.sync_ongoing_text) + "</b>"));
+
     }
 
     public void onLoadedQuestionsCount(String result) {
@@ -63,6 +67,9 @@ public class SyncActivity extends Activity {
         TextView htmlTextView = (TextView)findViewById(ch.reato.quizzbateau.R.id.labelSyncStatus);
         String text = "Quizz à synchroniser: " + questions_counts.get("quizz_new_count") + "<br>" + "Quizz à effacer: " + questions_counts.get("quizz_deleted_count") + "<br>";
         text = text + "Questions à synchroniser: " + questions_counts.get("questions_new_count") + "<br>" + "Questions à effacer: " + questions_counts.get("questions_deleted_count") + "<br>";
+        if(questions_counts.get("questions_new_count")>0) {
+            text = text + "<br><i><font color='blue'>La synchronisation est plus rapide en Wifi et peut prendre quelques secondes en fonction du nombre de questions.</font></i>";
+        }
         htmlTextView.setText(Html.fromHtml(text));
 
         hideSpinner();
@@ -73,7 +80,7 @@ public class SyncActivity extends Activity {
 
     public void onLoadedImages(List<Image> result){
         TextView htmlTextView = (TextView)findViewById(R.id.labelSyncStatus);
-        htmlTextView.setText(Html.fromHtml("<b>Synchronization réussie !</b>"));
+        htmlTextView.setText(Html.fromHtml("<b>" + getString(R.string.sync_ok_text) + "</b>"));
 
         hideSpinner();
 

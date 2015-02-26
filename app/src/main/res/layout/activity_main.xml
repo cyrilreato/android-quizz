@@ -24,7 +24,9 @@
         android:layout_height="wrap_content"
         android:textSize="14dp"
         android:layout_alignTop="@id/labelQuestion"
-        android:text="Juste-Faux question/quizz"
+        android:text="Juste-Faux question/quizz\nBonjour"
+        android:minLines="2"
+        android:singleLine="false"
         android:layout_alignParentRight="true"
         android:layout_alignBottom="@id/labelQuestion" />
 

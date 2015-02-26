@@ -3,15 +3,15 @@
 
     <string name="app_name">Quizz Bateau</string>
     <string name="action_settings">Paramètres</string>
-    <string name="sync_settings">Synchronizer</string>
+    <string name="sync_settings">Synchroniser</string>
     <string name="resetcounters_settings">Reset compteurs</string>
     <string name="question">Question</string>
     <string name="answer">Réponse</string>
     <string name="show">Montrer</string>
     <string name="wrong">Faux</string>
     <string name="right">Juste</string>
-    <string name="title_activity_sync">Synchronization Quizz</string>
-    <string name="synchronize">Synchronizer</string>
+    <string name="title_activity_sync">Synchronisation Quizz</string>
+    <string name="synchronize">Synchroniser</string>
     <string name="deleteall_settings">Effacer toutes les questions</string>
     <string name="quizz_settings">Changer de Quizz</string>
     <string name="view_settings">Consulter Quizz</string>
@@ -24,4 +24,8 @@
     <string name="title_activity_list_view">Liste de questions</string>
     <string name="questions_list">Liste de Questions</string>
     <string name="type_here_filter">Filter...</string>
+    <string name="no_question_text">Pas de question disponible. Changez de Quizz ou Synchronisez les questions.</string>
+    <string name="no_quizz_text">Pas de quizz disponible. Synchronisez les quizz.</string>
+    <string name="sync_ok_text">Synchronisation réussie ! Bon Quizz !</string>
+    <string name="sync_ongoing_text">Synchronisation en cours. Merci de patienter...</string>
 </resources>

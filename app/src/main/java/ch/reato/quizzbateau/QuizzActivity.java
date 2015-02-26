@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -21,17 +22,19 @@ public class QuizzActivity extends Activity {
     TextView txtCurrentQuizz;
     Spinner spinner;
     CheckBox chkAllQuizz;
+    Button btShow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quizz);
 
+        txtCurrentQuizz = (TextView)findViewById(R.id.labelCurrentQuizz);
+        spinner = (Spinner)findViewById(R.id.quizz_spinner);
+        btShow = (Button)findViewById(R.id.buttonShow);
+
         List<Quizz> quizzes = DBController.findAllQuizz(this);
 
-        txtCurrentQuizz = (TextView)findViewById(R.id.labelCurrentQuizz);
-
-        spinner = (Spinner)findViewById(R.id.quizz_spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter(this, R.layout.layout_spinner, quizzes);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -44,8 +47,16 @@ public class QuizzActivity extends Activity {
             Quizz q = DBController.findQuizz(this, currentQuizzId);
             txtCurrentQuizz.setText(Html.fromHtml("<b>" + q.getName() + "</b><br>" + Html.fromHtml(q.getDescription())));
         }else{
-            txtCurrentQuizz.setText("All Quizz");
-            chkAllQuizz.setChecked(true);
+            if(quizzes.size()==0){
+                txtCurrentQuizz.setText(Html.fromHtml("<i><font color='grey'>" + getString(R.string.no_quizz_text) + "</font></i>"));
+                chkAllQuizz.setEnabled(false);
+                btShow.setEnabled(false);
+            }else {
+                txtCurrentQuizz.setText("All Quizz");
+                chkAllQuizz.setChecked(true);
+                chkAllQuizz.setEnabled(true);
+                btShow.setEnabled(true);
+            }
             spinner.setEnabled(false);
         }
     }
@@ -78,5 +89,4 @@ public class QuizzActivity extends Activity {
         }
     }
 
-    private void populateCurrentQuizz(){}
 }

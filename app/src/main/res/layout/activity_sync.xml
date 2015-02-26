@@ -11,7 +11,7 @@
         android:id="@+id/labelSyncStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minLines="6"
+        android:minLines="8"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_marginTop="10dp"
