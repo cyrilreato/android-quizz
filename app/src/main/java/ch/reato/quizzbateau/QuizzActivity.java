@@ -42,23 +42,27 @@ public class QuizzActivity extends Activity {
         chkAllQuizz = (CheckBox)findViewById(R.id.chkAllQuizz);
 
         Intent i = getIntent();
-        currentQuizzId = i.getIntExtra("currentQuizzId", 0);
-        if(currentQuizzId != 0){
-            Quizz q = DBController.findQuizz(this, currentQuizzId);
-            txtCurrentQuizz.setText(Html.fromHtml("<b>" + q.getName() + "</b><br>" + Html.fromHtml(q.getDescription())));
-        }else{
-            if(quizzes.size()==0){
-                txtCurrentQuizz.setText(Html.fromHtml("<i><font color='grey'>" + getString(R.string.no_quizz_text) + "</font></i>"));
-                chkAllQuizz.setEnabled(false);
-                btShow.setEnabled(false);
-            }else {
+
+        if(quizzes.size()==0){
+            txtCurrentQuizz.setText(Html.fromHtml("<i><font color='grey'>" + getString(R.string.no_quizz_text) + "</font></i>"));
+            chkAllQuizz.setEnabled(false);
+            spinner.setEnabled(false);
+            btShow.setEnabled(false);
+        }else {
+            currentQuizzId = i.getIntExtra("currentQuizzId", 0);
+            if (currentQuizzId != 0) {
+                Quizz q = DBController.findQuizz(this, currentQuizzId);
+                txtCurrentQuizz.setText(Html.fromHtml("<b>" + q.getName() + "</b><br>" + Html.fromHtml(q.getDescription())));
+                spinner.setEnabled(true);
+            } else {
                 txtCurrentQuizz.setText("All Quizz");
                 chkAllQuizz.setChecked(true);
                 chkAllQuizz.setEnabled(true);
                 btShow.setEnabled(true);
+                spinner.setEnabled(false);
             }
-            spinner.setEnabled(false);
         }
+
     }
 
     public void onClickAllQuizz(View view){

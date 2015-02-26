@@ -85,6 +85,11 @@ public class DBController {
                 null,
                 null,
                 null);
+
+        if(cursor.getCount()==0){
+            return null;
+        }
+
         if(cursor!=null){
             cursor.moveToFirst();
         }

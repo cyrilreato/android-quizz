@@ -13,6 +13,7 @@
     <string name="title_activity_sync">Synchronisation Quizz</string>
     <string name="synchronize">Synchroniser</string>
     <string name="deleteall_settings">Effacer toutes les questions</string>
+    <string name="about_settings">A Propos...</string>
     <string name="quizz_settings">Changer de Quizz</string>
     <string name="view_settings">Consulter Quizz</string>
     <string name="initial_stats">0/0</string>
@@ -26,6 +27,9 @@
     <string name="type_here_filter">Filter...</string>
     <string name="no_question_text">Pas de question disponible. Changez de Quizz ou Synchronisez les questions.</string>
     <string name="no_quizz_text">Pas de quizz disponible. Synchronisez les quizz.</string>
-    <string name="sync_ok_text">Synchronisation réussie ! Bon Quizz !</string>
+    <string name="sync_ok_text">Synchronisation réussie ! Revenez en arrière pour démarrer le Quizz !</string>
     <string name="sync_ongoing_text">Synchronisation en cours. Merci de patienter...</string>
+    <string name="title_activity_about">A Propos de Quizz Bateau</string>
+    <string name="about_content">Application créée par Cyril Reato\n\ncyril@reato.ch\n\nN\'hésitez pas à m\'écrire en cas de question ou commentaire, ou pour ajouter ou corriger des questions.\n\nMerci !\n\nCyril</string>
+    <string name="dummy_button">Back</string>
 </resources>

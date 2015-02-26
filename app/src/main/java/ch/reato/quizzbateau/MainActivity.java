@@ -89,6 +89,9 @@ public class MainActivity extends Activity {
             mapCounters.put("right", 0);
             mapCounters.put("wrong", 0);
             populateUiWithCurrentCounters();
+        }else if(id == R.id.about_settings){
+            Intent i = new Intent(this, AboutActivity.class);
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);
@@ -126,7 +129,7 @@ public class MainActivity extends Activity {
 
     private void loadAndDisplayNewQuestion(){
         //boolean success = loadRandomQuestionDifferentFromCurrent();
-        boolean success = loadWeightedQuestionDifferentFromCurrent();
+        boolean success = loadWeightedRandomQuestionDifferentFromCurrent();
         if(success){
             toggleAnswerVisibility();
             populateUiWithCurrentQuestion();
@@ -152,7 +155,7 @@ public class MainActivity extends Activity {
         return true;
     }
 
-    private boolean loadWeightedQuestionDifferentFromCurrent() {
+    private boolean loadWeightedRandomQuestionDifferentFromCurrent() {
         if(qCount <= 1){
             return false;
         }
@@ -240,7 +243,7 @@ public class MainActivity extends Activity {
         Button buttonRight = (Button)findViewById(ch.reato.quizzbateau.R.id.buttonRight);
         Button buttonWrong = (Button)findViewById(ch.reato.quizzbateau.R.id.buttonWrong);
 
-        if(show==true){
+        if(show){
             labelAnswer.setVisibility(View.INVISIBLE);
             textAnswer.setVisibility(View.INVISIBLE);
             buttonRight.setVisibility(View.INVISIBLE);
