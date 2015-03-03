@@ -25,8 +25,8 @@
     <string name="title_activity_list_view">Liste de questions</string>
     <string name="questions_list">Liste de Questions</string>
     <string name="type_here_filter">Filter...</string>
-    <string name="no_question_text">Pas de question disponible. Téléchargez les questions.</string>
-    <string name="no_quizz_text">Pas de quizz disponible. Télécharger les quizz.</string>
+    <string name="no_question_text">Pas de question disponible. Téléchargez les questions en allant dans le menu en-haut à droite et en sélectionnant \"Télécharger Quizz\".</string>
+    <string name="no_quizz_text">Pas de quizz disponible. Télécharger les quizz en allant dans le menu en-haut à droite et en sélectionnant \"Télécharger Quizz\".</string>
     <string name="sync_ok_text">Téléchargement réussi ! Revenez en arrière pour démarrer le Quizz !</string>
     <string name="sync_ongoing_text">Téléchargement en cours. Merci de patienter...</string>
     <string name="title_activity_about">A Propos de Quizz Bateau</string>
