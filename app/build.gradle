@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'MyAndroidKey'
+            keyPassword 'h46bh2j0'
+            storeFile file('C:/Users/ex200137/keystores/android.jks')
+            storePassword 'h46bh2j0'
+        }
+    }
     compileSdkVersion 21
     buildToolsVersion '21.1.2'
     defaultConfig {
@@ -14,6 +22,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
     productFlavors {

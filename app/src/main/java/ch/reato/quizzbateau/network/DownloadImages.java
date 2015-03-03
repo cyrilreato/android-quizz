@@ -114,7 +114,7 @@ public class DownloadImages extends AsyncTask<String, Integer, List<Image>> {
 
         } catch (IOException e) {
             e.printStackTrace();
-            Log.e("getBmpFromUrl error: ", e.getMessage().toString());
+            //Log.e("getBmpFromUrl error: ", e.getMessage().toString());
             return null;
         }
     }

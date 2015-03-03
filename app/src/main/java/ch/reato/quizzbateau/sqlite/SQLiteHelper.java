@@ -7,7 +7,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     private static SQLiteHelper sInstance;
     private final Context myContext;
-    private static final int DATABASE_VERSION = 15;
+    private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "QuizzDB";
 
 
