@@ -60,12 +60,18 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        //System.out.println("onUpgrade database");
         db.execSQL("DROP TABLE IF EXISTS quizz");
         db.execSQL("DROP TABLE IF EXISTS question");
         db.execSQL("DROP TABLE IF EXISTS quizz_config");
         this.onCreate(db);
     }
 
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS quizz");
+        db.execSQL("DROP TABLE IF EXISTS question");
+        db.execSQL("DROP TABLE IF EXISTS quizz_config");
+        this.onCreate(db);
+    }
 
 }
